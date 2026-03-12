@@ -1,0 +1,6 @@
+pandas
+matplotlib
+matplotlib.pyplot
+requests
+yfinance
+streamlit

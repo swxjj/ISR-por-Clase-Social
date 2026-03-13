@@ -89,10 +89,10 @@ with col_izq:
           salario = st.slider("Ingrese su salario familiar estimado", min_value=100000, max_value=10000000, value=1000000, step=100000, format="$%d")
         with col_personas:  
           personas = st.slider("Ingrese la cantidad de personas en su hogar", min_value=1, max_value=10, value=1, step=1)
-        if salario/personas > df_all['Costo_Canasta'].max()*1.5:
+        if salario/personas > df_all['Costo_Canasta'].max()*3.5:
             st.write(f"Su clase es Alta")
             clase_final = "Alta"
-        elif salario/personas < df_all['Costo_Canasta'].max():
+        elif salario/personas < df_all['Costo_Canasta'].max()*1.2:
             st.write(f"Su clase es Baja")
             clase_final = "Baja"
         else:

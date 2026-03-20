@@ -132,7 +132,8 @@ with col_izq:
         df_isr['ISR'] = df_isr['ISAL'] / df_isr['IPC Clase'] * 100
     
         with col_der:
-            fig, ax = plt.subplots(figsize=(7, 4)
+            fig, ax = plt.subplots(figsize=(7, 4))
+          
             ax.plot(df_isr.index, df_isr['ISR'], label='Salario Real (Poder de Compra)', color='#1f77b4', linewidth=3)
             ax.axhline(100, color='red', linestyle='--', linewidth=1.5, label='Base 100')
             ax.set_title(f"Salarios vs. Inflación desde {fecha_str}", fontsize=14)

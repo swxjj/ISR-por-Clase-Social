@@ -70,13 +70,11 @@ with col_izq:
     else:
         st.markdown("""
             <style>
-                /* Creamos la animación (aparecer de la nada y subir 15 píxeles) */
                 @keyframes fadeSlideUp {
                     0% { opacity: 0; transform: translateY(15px); }
                     100% { opacity: 1; transform: translateY(0); }
                 }
-                
-                /* Le aplicamos la animación a los Sliders, Inputs numéricos y Métricas */
+            
                 [data-testid="stSlider"], 
                 [data-testid="stNumberInput"], 
                 [data-testid="stMetric"] {
@@ -134,24 +132,12 @@ with col_izq:
         df_isr['ISR'] = df_isr['ISAL'] / df_isr['IPC Clase'] * 100
     
         with col_der:
-            fig, ax = plt.subplots(figsize=(7, 4))
-
-            # 2. Dibujamos las 3 líneas usando el índice (las fechas) en el eje X
-            ax.plot(df_isr.index, df_isr['ISR'], label='Salario Real (Poder de Compra)', color='#1f77b4', linewidth=3) # Azul más grueso
-
-            # 3. Agregamos tu línea horizontal mágica en 100
+            fig, ax = plt.subplots(figsize=(7, 4)
+            ax.plot(df_isr.index, df_isr['ISR'], label='Salario Real (Poder de Compra)', color='#1f77b4', linewidth=3)
             ax.axhline(100, color='red', linestyle='--', linewidth=1.5, label='Base 100')
-
-            # 4. Ajustes estéticos para que parezca de nivel profesional
             ax.set_title(f"Salarios vs. Inflación desde {fecha_str}", fontsize=14)
             ax.set_xlabel("Fecha", fontsize=12)
             ax.set_ylabel("Índice (Base 100)", fontsize=12)
-
-            # Ponemos la leyenda que habías pedido
             ax.legend(loc='best')
-
-            # Le agregamos una cuadrícula suave de fondo para que los valores sean fáciles de leer
             ax.grid(True, linestyle='--', alpha=0.5)
-
-            # 5. ¡Lo disparamos a la pantalla de Streamlit!
             st.pyplot(fig, use_container_width=False)

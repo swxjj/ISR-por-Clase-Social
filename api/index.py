@@ -1,9 +1,19 @@
 from http.server import BaseHTTPRequestHandler
 import json
+import math
 import os
 import pandas as pd
 import requests
 from urllib.parse import parse_qs, urlparse
+
+
+def safe_round(v, digits=2):
+    """Convierte NaN/Inf a None (→ null en JSON) y redondea el resto."""
+    try:
+        f = float(v)
+        return None if (math.isnan(f) or math.isinf(f)) else round(f, digits)
+    except (TypeError, ValueError):
+        return None
 
 # ── Constantes ──────────────────────────────────────────────────────────────
 
@@ -95,6 +105,9 @@ def compute_isr(df_all, df_pond, clase, salario_col, fecha_inicio):
     # Salario real
     df_isr['ISR'] = df_isr['ISAL'] / df_isr['IPC Clase'] * 100
 
+    # Propagar hacia adelante gaps puntuales del INDEC y eliminar NaN restantes
+    df_isr = df_isr.ffill().dropna(subset=['ISR', 'ISAL', 'IPC Clase'])
+
     df_isr = df_isr.reset_index()
     df_isr['fecha'] = df_isr['fecha'].dt.strftime('%Y-%m-%d')
     return df_isr
@@ -170,13 +183,13 @@ class handler(BaseHTTPRequestHandler):
 
             self.send_json({
                 'fechas':      df_isr['fecha'].tolist(),
-                'isr':         [round(v, 2) for v in df_isr['ISR'].tolist()],
-                'ipc':         [round(v, 2) for v in df_isr['IPC Clase'].tolist()],
-                'isal':        [round(v, 2) for v in df_isr['ISAL'].tolist()],
+                'isr':         [safe_round(v) for v in df_isr['ISR']],
+                'ipc':         [safe_round(v) for v in df_isr['IPC Clase']],
+                'isal':        [safe_round(v) for v in df_isr['ISAL']],
                 'fecha_min':   fecha_min,
                 'fecha_max':   fecha_max,
                 'canasta_max': canasta_max,
-                'ultimo_isr':  round(float(df_isr['ISR'].iloc[-1]), 2),
+                'ultimo_isr':  safe_round(df_isr['ISR'].iloc[-1]),
                 'clase':       clase,
                 'salario_key': salario_key,
             })

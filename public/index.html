@@ -3,35 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>¿Ganamos o Perdimos? — ISR por Clase Social</title>
+  
+  <!-- Favicon para la pestaña del navegador -->
+  <link rel="icon" type="image/png" href="./icono.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
   <style>
+    /* Carga de tu fuente personalizada */
+    @font-face {
+      font-family: 'hvtc';
+      /* Ajustá esta ruta dependiendo de dónde guardes el archivo de la fuente y qué formato sea (.ttf, .woff2, etc) */
+      src: url('./Helvetica-Bold.ttf') format('truetype'); 
+      font-weight: normal;
+      font-style: normal;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Paleta de colores actualizada (Slate oscuro + Teal de acento) */
     :root {
-      --bg:        #070d1a;
-      --card:      #0d1826;
-      --card-hi:   #131f33;
-      --hover:     #19293f;
-      --amber:     #e8b84b;
-      --amber-dim: rgba(232,184,75,.10);
+      --bg:        #0b1121; /* Fondo principal más azulado */
+      --card:      #151e32; /* Fondo de las tarjetas */
+      --card-hi:   #1e293b; 
+      --hover:     #283548;
+      --amber:     #14b8a6; /* Acento cambiado a Teal/Verde agua */
+      --amber-dim: rgba(20,184,166,.10);
       --gain:      #2ed573;
       --gain-dim:  rgba(46,213,115,.10);
       --loss:      #f74b5e;
       --loss-dim:  rgba(247,75,94,.10);
-      --blue:      #4f8ef7;
-      --blue-dim:  rgba(79,142,247,.14);
-      --txt:       #c8d2e0;
-      --txt-2:     #6b7a8e;
-      --txt-3:     #384555;
-      --border:    rgba(255,255,255,.07);
+      --blue:      #3b82f6;
+      --blue-dim:  rgba(59,130,246,.14);
+      --txt:       #e2e8f0;
+      --txt-2:     #94a3b8;
+      --txt-3:     #64748b;
+      --border:    rgba(255,255,255,.08);
       --border-s:  rgba(255,255,255,.04);
       --radius:    12px;
       --radius-s:  8px;
@@ -63,11 +77,12 @@
       flex-wrap: wrap;
     }
     header h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.55rem;
-      font-weight: 400;
-      letter-spacing: -.02em;
-      color: #e8edf5;
+      /* Aplicación de la fuente hvtc al título principal */
+      font-family: 'hvtc', serif;
+      font-size: 1.7rem; /* Ligeramente más grande para compensar fuentes custom */
+      font-weight: normal;
+      letter-spacing: -.01em;
+      color: #f1f5f9;
     }
     header h1 span { color: var(--amber); }
     .header-sub {
@@ -133,7 +148,7 @@
     .seg button:hover { background: var(--hover); color: var(--txt); }
     .seg button.active {
       background: var(--amber);
-      color: #0d0a00;
+      color: #0b1121; /* Texto oscuro para contrastar con el nuevo color de acento */
     }
 
     /* ── "No sé" class calculator ───────────────────────────────── */
@@ -214,7 +229,7 @@
     .detected-class {
       display: flex; align-items: center; gap: 8px;
       background: var(--amber-dim);
-      border: 1px solid rgba(232,184,75,.2);
+      border: 1px solid rgba(20,184,166,.2); /* Ajustado al nuevo color Teal */
       border-radius: var(--radius-s);
       padding: 8px 12px;
       font-size: .8rem;
@@ -238,7 +253,7 @@
       color-scheme: dark;
     }
     input[type=month]:hover, input[type=month]:focus {
-      border-color: rgba(232,184,75,.4);
+      border-color: rgba(20,184,166,.4); /* Ajustado al nuevo color Teal */
     }
 
     .sidebar-footer {
@@ -321,10 +336,11 @@
       color: var(--txt-2);
     }
     .kpi-number {
-      font-family: 'DM Serif Display', serif;
+      /* Aplicación de la fuente hvtc a los números grandes */
+      font-family: 'hvtc', serif;
       font-size: 6rem;
       line-height: 1;
-      letter-spacing: -.04em;
+      letter-spacing: -.02em;
       transition: color .5s ease;
       font-variant-numeric: tabular-nums;
     }
@@ -334,10 +350,11 @@
 
     .kpi-context { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; }
     .kpi-verdict {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.25rem;
-      font-weight: 400;
-      color: #dde4ef;
+      /* Aplicación de la fuente hvtc al veredicto */
+      font-family: 'hvtc', serif;
+      font-size: 1.4rem;
+      font-weight: normal;
+      color: #f8fafc;
     }
     .kpi-detail { font-size: .8rem; color: var(--txt-2); line-height: 1.6; }
 

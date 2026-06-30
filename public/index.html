@@ -3,49 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>¿Ganamos o Perdimos? — ISR por Clase Social</title>
-  
-  <!-- Favicon para la pestaña del navegador -->
-  <link rel="icon" type="image/png" href="./icono.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
   <style>
-    /* Carga de tu fuente personalizada */
-    @font-face {
-      font-family: 'hvtc';
-      /* Ajustá esta ruta dependiendo de dónde guardes el archivo de la fuente y qué formato sea (.ttf, .woff2, etc) */
-      src: url('./Helvetica-Bold.ttf') format('truetype'); 
-      font-weight: normal;
-      font-style: normal;
-    }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Paleta de colores actualizada (Slate oscuro + Teal de acento) */
     :root {
-      --bg:        #0b1121; /* Fondo principal más azulado */
-      --card:      #151e32; /* Fondo de las tarjetas */
-      --card-hi:   #1e293b; 
-      --hover:     #283548;
-      --amber:     #14b8a6; /* Acento cambiado a Teal/Verde agua */
-      --amber-dim: rgba(20,184,166,.10);
+      --bg:        #070d1a;
+      --card:      #0d1826;
+      --card-hi:   #131f33;
+      --hover:     #19293f;
+      --amber:     #e8b84b;
+      --amber-dim: rgba(232,184,75,.10);
       --gain:      #2ed573;
       --gain-dim:  rgba(46,213,115,.10);
       --loss:      #f74b5e;
       --loss-dim:  rgba(247,75,94,.10);
-      --blue:      #3b82f6;
-      --blue-dim:  rgba(59,130,246,.14);
-      --txt:       #e2e8f0;
-      --txt-2:     #94a3b8;
-      --txt-3:     #64748b;
-      --border:    rgba(255,255,255,.08);
+      --blue:      #4f8ef7;
+      --blue-dim:  rgba(79,142,247,.14);
+      --txt:       #c8d2e0;
+      --txt-2:     #6b7a8e;
+      --txt-3:     #384555;
+      --border:    rgba(255,255,255,.07);
       --border-s:  rgba(255,255,255,.04);
       --radius:    12px;
       --radius-s:  8px;
@@ -77,12 +63,11 @@
       flex-wrap: wrap;
     }
     header h1 {
-      /* Aplicación de la fuente hvtc al título principal */
-      font-family: 'hvtc', serif;
-      font-size: 1.7rem; /* Ligeramente más grande para compensar fuentes custom */
-      font-weight: normal;
-      letter-spacing: -.01em;
-      color: #f1f5f9;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      letter-spacing: -.02em;
+      color: #e8edf5;
     }
     header h1 span { color: var(--amber); }
     .header-sub {
@@ -148,7 +133,7 @@
     .seg button:hover { background: var(--hover); color: var(--txt); }
     .seg button.active {
       background: var(--amber);
-      color: #0b1121; /* Texto oscuro para contrastar con el nuevo color de acento */
+      color: #0d0a00;
     }
 
     /* ── "No sé" class calculator ───────────────────────────────── */
@@ -229,7 +214,7 @@
     .detected-class {
       display: flex; align-items: center; gap: 8px;
       background: var(--amber-dim);
-      border: 1px solid rgba(20,184,166,.2); /* Ajustado al nuevo color Teal */
+      border: 1px solid rgba(232,184,75,.2);
       border-radius: var(--radius-s);
       padding: 8px 12px;
       font-size: .8rem;
@@ -253,7 +238,7 @@
       color-scheme: dark;
     }
     input[type=month]:hover, input[type=month]:focus {
-      border-color: rgba(20,184,166,.4); /* Ajustado al nuevo color Teal */
+      border-color: rgba(232,184,75,.4);
     }
 
     .sidebar-footer {
@@ -328,6 +313,12 @@
       flex-direction: column;
       gap: 2px;
     }
+    .kpi-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2px;
+    }
     .kpi-eyebrow {
       font-size: .72rem;
       font-weight: 600;
@@ -335,12 +326,26 @@
       text-transform: uppercase;
       color: var(--txt-2);
     }
+    .trend-badge {
+      font-size: .7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 100px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .trend-badge.visible { display: inline-flex; }
+    .trend-badge.up   { background: var(--gain-dim); color: var(--gain); }
+    .trend-badge.down { background: var(--loss-dim); color: var(--loss); }
+    .trend-badge.flat { background: var(--border); color: var(--txt-2); }
+
     .kpi-number {
-      /* Aplicación de la fuente hvtc a los números grandes */
-      font-family: 'hvtc', serif;
+      font-family: 'DM Serif Display', serif;
       font-size: 6rem;
       line-height: 1;
-      letter-spacing: -.02em;
+      letter-spacing: -.04em;
       transition: color .5s ease;
       font-variant-numeric: tabular-nums;
     }
@@ -350,13 +355,21 @@
 
     .kpi-context { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; }
     .kpi-verdict {
-      /* Aplicación de la fuente hvtc al veredicto */
-      font-family: 'hvtc', serif;
-      font-size: 1.4rem;
-      font-weight: normal;
-      color: #f8fafc;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: #dde4ef;
     }
-    .kpi-detail { font-size: .8rem; color: var(--txt-2); line-height: 1.6; }
+    .kpi-detail { line-height: 1.6; }
+    .kpi-detail-main {
+      font-size: .88rem;
+      color: var(--txt);
+      font-weight: 400;
+    }
+    .kpi-detail-sub {
+      font-size: .75rem;
+      color: var(--txt-2);
+    }
 
     /* Mini KPIs */
     .mini-kpis {
@@ -387,7 +400,44 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
+    .chart-header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .toggle-componentes {
+      background: var(--card-hi);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--txt-2);
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .toggle-componentes:hover {
+      background: var(--hover);
+      color: var(--txt);
+    }
+    .toggle-componentes.active {
+      background: var(--blue-dim);
+      border-color: rgba(79,142,247,.35);
+      color: var(--blue);
+    }
+    .chart-caption {
+      margin-top: 12px;
+      font-size: .72rem;
+      color: var(--txt-3);
+      line-height: 1.6;
+      display: none;
+    }
+    .chart-caption.visible { display: block; }
     .chart-title {
       font-size: .75rem;
       font-weight: 600;
@@ -548,14 +598,18 @@
         <div class="kpi-row">
           <!-- KPI principal -->
           <div class="kpi-main">
-            <span class="kpi-eyebrow">Poder adquisitivo actual</span>
+            <div class="kpi-eyebrow-row">
+              <span class="kpi-eyebrow">Poder adquisitivo actual</span>
+              <span class="trend-badge" id="trend-badge"></span>
+            </div>
             <div class="kpi-number neutral" id="kpi-number">—</div>
           </div>
 
           <!-- Contexto -->
           <div class="kpi-context">
             <div class="kpi-verdict" id="kpi-verdict">—</div>
-            <div class="kpi-detail" id="kpi-detail">—</div>
+            <div class="kpi-detail kpi-detail-main" id="kpi-detail">—</div>
+            <div class="kpi-detail kpi-detail-sub" id="kpi-detail-sub">—</div>
           </div>
 
           <!-- Mini KPIs -->
@@ -575,14 +629,24 @@
         <div class="chart-card">
           <div class="chart-header">
             <span class="chart-title">Evolución del Índice de Salario Real (Base 100)</span>
-            <div class="chart-legend">
-              <span><span class="legend-dot" style="background:var(--blue)"></span>ISR</span>
-              <span><span class="legend-dot" style="background:var(--loss);opacity:.6"></span>Base 100</span>
+            <div class="chart-header-right">
+              <div class="chart-legend" id="chart-legend">
+                <span><span class="legend-dot" style="background:var(--blue)"></span>ISR</span>
+                <span><span class="legend-dot" style="background:var(--loss);opacity:.6"></span>Base 100</span>
+              </div>
+              <button class="toggle-componentes" id="toggle-componentes" aria-pressed="false">
+                + Ver componentes
+              </button>
             </div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart"></canvas>
           </div>
+          <p class="chart-caption" id="chart-caption">
+            <strong style="color:var(--blue)">ISR</strong> = cuánto podés comprar realmente ·
+            <strong style="color:var(--amber)">Salario nominal</strong> = cuánto subió tu sueldo en pesos ·
+            <strong style="color:var(--loss)">Inflación de tu clase</strong> = cuánto subieron los precios que más consumís
+          </p>
         </div>
 
       </div>
@@ -602,6 +666,8 @@ const S = {
   // Desde API
   meta:       null,
   chart:      null,
+  // UI
+  showComponentes: false,
 };
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
@@ -731,13 +797,18 @@ function renderResults(data) {
   const fechaIni = fmtMonth(data.fechas[0]);
   const fechaFin = fmtMonth(data.fechas[data.fechas.length-1]);
   $('kpi-verdict').textContent = isGain
-    ? `Ganamos 🟢`
+    ? `Ganamos (un poco) 🟢`
     : `Perdimos poder de compra 🔴`;
 
   const label = isGain
     ? `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy tenés $${isr.toFixed(0)}.`
     : `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy te quedan $${isr.toFixed(0)}.`;
-  $('kpi-detail').textContent = label + ` Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · hasta ${fechaFin}.`;
+  $('kpi-detail').textContent = label;
+  $('kpi-detail-sub').textContent =
+    `Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaFin}`;
+
+  // Badge de tendencia (últimos 6 meses, o todo el período si hay menos datos)
+  renderTrendBadge(data);
 
   // Mini KPIs
   const ipcFinal  = data.ipc[data.ipc.length-1];
@@ -749,6 +820,34 @@ function renderResults(data) {
   renderChart(data);
 }
 
+function renderTrendBadge(data) {
+  const badge = $('trend-badge');
+  const n = data.isr.length;
+  const window = Math.min(6, n - 1);
+
+  if (window < 1) {
+    badge.classList.remove('visible');
+    return;
+  }
+
+  const actual  = data.isr[n - 1];
+  const antes   = data.isr[n - 1 - window];
+  const diff    = actual - antes;
+
+  const periodoLabel = window < 6 ? `desde ${fmtMonth(data.fechas[0])}` : 'últimos 6 meses';
+
+  if (Math.abs(diff) < 0.3) {
+    badge.className = 'trend-badge flat visible';
+    badge.textContent = `→ estable (${periodoLabel})`;
+  } else if (diff > 0) {
+    badge.className = 'trend-badge up visible';
+    badge.textContent = `↑ +${diff.toFixed(1)}pp (${periodoLabel})`;
+  } else {
+    badge.className = 'trend-badge down visible';
+    badge.textContent = `↓ ${diff.toFixed(1)}pp (${periodoLabel})`;
+  }
+}
+
 function labelSalario(key) {
   const m = { privado:'Privado', publico:'Público', informal:'Informal', general:'General' };
   return m[key] || key;
@@ -756,39 +855,69 @@ function labelSalario(key) {
 
 function renderChart(data) {
   if (S.chart) S.chart.destroy();
+  S.lastData = data; // guardamos para poder togglear sin re-fetch
 
   const canvas = $('chart');
   const ctx = canvas.getContext('2d');
 
-  const chartArea = { top: 0, bottom: 260 }; // estimado antes del render
   const gradient = ctx.createLinearGradient(0, 0, 0, 260);
   gradient.addColorStop(0,   'rgba(79,142,247,0.22)');
   gradient.addColorStop(0.7, 'rgba(79,142,247,0.04)');
   gradient.addColorStop(1,   'rgba(79,142,247,0)');
 
-  // Etiquetas: mostrar solo ~12 en el eje X
   const labels = data.fechas.map(f => {
     const d = new Date(f + 'T00:00:00');
     return d.toLocaleDateString('es-AR', { month: 'short', year: '2-digit' });
   });
 
+  const datasets = [{
+    label: 'ISR',
+    data: data.isr,
+    borderColor: '#4f8ef7',
+    backgroundColor: gradient,
+    fill: true,
+    borderWidth: 2.5,
+    pointRadius: 0,
+    pointHoverRadius: 5,
+    pointHoverBackgroundColor: '#4f8ef7',
+    tension: 0.35,
+    order: 1,
+  }];
+
+  if (S.showComponentes) {
+    datasets.push({
+      label: 'Salario nominal',
+      data: data.isal,
+      borderColor: '#e8b84b',
+      backgroundColor: 'transparent',
+      fill: false,
+      borderWidth: 1.5,
+      borderDash: [3, 3],
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      tension: 0.35,
+      order: 2,
+    });
+    datasets.push({
+      label: 'Inflación de tu clase',
+      data: data.ipc,
+      borderColor: '#f74b5e',
+      backgroundColor: 'transparent',
+      fill: false,
+      borderWidth: 1.5,
+      borderDash: [3, 3],
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      tension: 0.35,
+      order: 3,
+    });
+  }
+
+  const fechaIni = fmtMonth(data.fechas[0]);
+
   S.chart = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'ISR',
-        data: data.isr,
-        borderColor: '#4f8ef7',
-        backgroundColor: gradient,
-        fill: true,
-        borderWidth: 2.5,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: '#4f8ef7',
-        tension: 0.35,
-      }]
-    },
+    data: { labels, datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -805,7 +934,7 @@ function renderChart(data) {
               borderDash: [6, 4],
               label: {
                 display: true,
-                content: 'Base 100',
+                content: `Base 100 = ${fechaIni}`,
                 position: 'start',
                 backgroundColor: 'transparent',
                 color: 'rgba(247,75,94,0.65)',
@@ -824,7 +953,7 @@ function renderChart(data) {
           padding: 12,
           callbacks: {
             title: items => fmtMonth(data.fechas[items[0].dataIndex]),
-            label: item => ` ISR: ${item.raw.toFixed(2)}`,
+            label: item => ` ${item.dataset.label}: ${item.raw.toFixed(2)}`,
           }
         }
       },
@@ -842,6 +971,18 @@ function renderChart(data) {
       }
     }
   });
+
+  // Leyenda y caption dinámicas
+  const legend = $('chart-legend');
+  legend.innerHTML = `
+    <span><span class="legend-dot" style="background:#4f8ef7"></span>ISR</span>
+    <span><span class="legend-dot" style="background:rgba(247,75,94,.6)"></span>Base 100</span>
+    ${S.showComponentes ? `
+      <span><span class="legend-dot" style="background:#e8b84b"></span>Salario nominal</span>
+      <span><span class="legend-dot" style="background:#f74b5e"></span>Inflación</span>
+    ` : ''}
+  `;
+  $('chart-caption').classList.toggle('visible', S.showComponentes);
 }
 
 // ── UI helpers ────────────────────────────────────────────────────────────
@@ -891,6 +1032,16 @@ async function main() {
   $('input-fecha').addEventListener('change', e => {
     S.fecha = e.target.value;
     maybeAnalyze();
+  });
+
+  // Toggle componentes (ISAL / IPC) — re-renderiza el gráfico sin re-fetch
+  $('toggle-componentes').addEventListener('click', () => {
+    S.showComponentes = !S.showComponentes;
+    const btn = $('toggle-componentes');
+    btn.classList.toggle('active', S.showComponentes);
+    btn.setAttribute('aria-pressed', String(S.showComponentes));
+    btn.textContent = S.showComponentes ? '− Ocultar componentes' : '+ Ver componentes';
+    if (S.lastData) renderChart(S.lastData);
   });
 
   // Mostrar fecha una vez que hay clase + salario

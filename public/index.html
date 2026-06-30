@@ -370,6 +370,79 @@
       font-size: .75rem;
       color: var(--txt-2);
     }
+    .kpi-explanation {
+      font-size: 1rem;
+      color: #e7eef8;
+      max-width: 400px;
+      line-height: 1.4;
+      margin-top: 8px;
+      letter-spacing: -.01em;
+    }
+    .control-hint {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      color: var(--txt-2);
+      font-size: .75rem;
+      cursor: help;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .control-hint:hover {
+      background: rgba(232,184,75,.1);
+      color: var(--amber);
+    }
+    .rubros-panel {
+      margin-top: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 14px 10px;
+      color: var(--txt);
+    }
+    .rubros-panel summary {
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--txt);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+    }
+    .rubros-panel summary::-webkit-details-marker {
+      display: none;
+    }
+    .rubros-panel summary::after {
+      content: '▾';
+      font-size: .8rem;
+      transform-origin: center;
+      transition: transform .2s ease;
+    }
+    .rubros-panel[open] summary::after {
+      transform: rotate(180deg);
+    }
+    .rubros-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .rubro-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: .84rem;
+      color: var(--txt-2);
+    }
+    .rubro-row strong {
+      color: var(--txt);
+      font-weight: 600;
+    }
 
     /* Mini KPIs */
     .mini-kpis {
@@ -512,7 +585,9 @@
 
       <!-- Clase Social -->
       <div class="control-group">
-        <span class="control-label">Tu clase social</span>
+        <span class="control-label">Tu clase social
+          <span class="control-hint" title="La clase social decide qué precios pesan más en tu canasta: en Baja pesan más alimentos, en Alta pesan más transporte y vivienda.">?</span>
+        </span>
         <div class="seg" id="seg-clase">
           <button data-val="Alta">Alta</button>
           <button data-val="Media">Media</button>
@@ -545,11 +620,20 @@
             <span>Tu clase estimada: <strong id="clase-estimada">—</strong></span>
           </div>
         </div>
+
+        <details class="rubros-panel" id="rubros-panel">
+          <summary>¿Qué pesa más en tu canasta?</summary>
+          <div class="rubros-list" id="rubros-list">
+            <div class="rubro-row"><strong>Elige una clase</strong><span>y verás los rubros clave.</span></div>
+          </div>
+        </details>
       </div>
 
       <!-- Origen de Ingresos -->
       <div class="control-group">
-        <span class="control-label">Origen de tus ingresos</span>
+        <span class="control-label">Origen de tus ingresos
+          <span class="control-hint" title="Privado: sueldo de empresa; Público: sueldo estatal; Informal: ingresos sin aportes formales. Si no sabés, elegí No sé.">?</span>
+        </span>
         <div class="seg" id="seg-salario">
           <button data-val="privado">Privado</button>
           <button data-val="publico">Público</button>
@@ -602,6 +686,7 @@
               <span class="kpi-eyebrow">Poder adquisitivo actual</span>
               <span class="trend-badge" id="trend-badge"></span>
             </div>
+            <div class="kpi-explanation" id="kpi-explanation">Por cada $100 de enero, hoy podés comprar esto con tu salario real.</div>
             <div class="kpi-number neutral" id="kpi-number">—</div>
           </div>
 
@@ -803,12 +888,14 @@ function renderResults(data) {
   const label = isGain
     ? `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy tenés $${isr.toFixed(0)}.`
     : `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy te quedan $${isr.toFixed(0)}.`;
-  $('kpi-detail').textContent = label;
+  $('kpi-explanation').textContent = label;
+  $('kpi-detail').textContent = `Este número dice cuánto podés comprar hoy frente a lo que podías comprar en ${fechaIni}.`;
   $('kpi-detail-sub').textContent =
     `Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaFin}`;
 
   // Badge de tendencia (últimos 6 meses, o todo el período si hay menos datos)
   renderTrendBadge(data);
+  renderRubrosPanel(data);
 
   // Mini KPIs
   const ipcFinal  = data.ipc[data.ipc.length-1];
@@ -851,6 +938,30 @@ function renderTrendBadge(data) {
 function labelSalario(key) {
   const m = { privado:'Privado', publico:'Público', informal:'Informal', general:'General' };
   return m[key] || key;
+}
+
+function renderRubrosPanel(data) {
+  const list = $('rubros-list');
+  const panel = $('rubros-panel');
+
+  if (!data?.top_rubros || !S.clase) {
+    list.innerHTML = '<div class="rubro-row"><strong>Elige una clase</strong><span>y verás los rubros clave.</span></div>';
+    return;
+  }
+
+  const items = data.top_rubros[S.clase] || [];
+  if (!items.length) {
+    list.innerHTML = '<div class="rubro-row"><strong>No hay datos</strong><span>para esta clase.</span></div>';
+    return;
+  }
+
+  list.innerHTML = items.map((item, index) => `
+      <div class="rubro-row">
+        <strong>${index + 1}. ${item.rubro}</strong>
+        <span>${(item.peso * 100).toFixed(1)}% de la canasta</span>
+      </div>
+    `).join('');
+  panel.open = true;
 }
 
 function renderChart(data) {

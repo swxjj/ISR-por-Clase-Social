@@ -113,6 +113,17 @@ def compute_isr(df_all, df_pond, clase, salario_col, fecha_inicio):
     return df_isr
 
 
+def top_rubros_por_clase(df_pond, top_n=3):
+    result = {}
+    for clase in CLASES_VALIDAS:
+        top = df_pond[clase].sort_values(ascending=False).head(top_n)
+        result[clase] = [
+            {'rubro': idx, 'peso': float(v)}
+            for idx, v in top.items()
+        ]
+    return result
+
+
 # ── Handler HTTP ─────────────────────────────────────────────────────────────
 
 class handler(BaseHTTPRequestHandler):
@@ -180,6 +191,7 @@ class handler(BaseHTTPRequestHandler):
 
             # ── Cómputo ──────────────────────────────────────────────────────
             df_isr = compute_isr(df_all, df_pond, clase, salario_col, fecha_ts)
+            top_rubros = top_rubros_por_clase(df_pond)
 
             self.send_json({
                 'fechas':      df_isr['fecha'].tolist(),
@@ -192,6 +204,7 @@ class handler(BaseHTTPRequestHandler):
                 'ultimo_isr':  safe_round(df_isr['ISR'].iloc[-1]),
                 'clase':       clase,
                 'salario_key': salario_key,
+                'top_rubros':  top_rubros,
             })
 
         except Exception as exc:

@@ -93,20 +93,36 @@ def compute_isr(df_all, df_pond, clase, salario_col, fecha_inicio):
     # Fecha real de inicio (puede ser el primer dato disponible >= fecha_inicio)
     first_ts = df_base.index[0]
 
+    # IPC ponderado por clase — rellenar gaps internos primero, luego anotar
+    # la última fecha con dato real (antes del ffill) para no mezclar períodos
+    isal_series = df_all.loc[df_all.index >= first_ts, salario_col]
+
+    # Última fecha con dato real en cada serie (antes de cualquier relleno)
+    ultimo_ipc_real  = df_base.dropna(how='all').index.max()
+    ultimo_isal_real = isal_series.dropna().index.max()
+    corte = min(ultimo_ipc_real, ultimo_isal_real)
+
+    # Truncar ambas series al mínimo común → mini-KPIs y ISR quedan alineados
+    df_base    = df_base[df_base.index <= corte]
+    isal_series = isal_series[isal_series.index <= corte]
+
+    # Relleno de gaps internos puntuales (no del extremo)
+    df_base     = df_base.ffill()
+    isal_series = isal_series.ffill()
+
     # IPC ponderado por clase
     pesos = df_pond[clase]
     df_isr = df_base.dot(pesos).to_frame('IPC Clase')
     df_isr['IPC Clase'] = df_isr['IPC Clase'] / df_isr.loc[first_ts, 'IPC Clase'] * 100
 
     # Índice salarial
-    isal_series = df_all.loc[df_all.index >= first_ts, salario_col]
     df_isr['ISAL'] = isal_series / isal_series.iloc[0] * 100
 
     # Salario real
     df_isr['ISR'] = df_isr['ISAL'] / df_isr['IPC Clase'] * 100
 
-    # Propagar hacia adelante gaps puntuales del INDEC y eliminar NaN restantes
-    df_isr = df_isr.ffill().dropna(subset=['ISR', 'ISAL', 'IPC Clase'])
+    # Eliminar cualquier NaN residual
+    df_isr = df_isr.dropna(subset=['ISR', 'ISAL', 'IPC Clase'])
 
     df_isr = df_isr.reset_index()
     df_isr['fecha'] = df_isr['fecha'].dt.strftime('%Y-%m-%d')
@@ -157,9 +173,13 @@ class handler(BaseHTTPRequestHandler):
             # ── Solo metadatos (sin parámetros de análisis) ──────────────────
             if not clase or not salario_key or not fecha_str:
                 self.send_json({
-                    'canasta_max': canasta_max,
-                    'fecha_min':   fecha_min,
-                    'fecha_max':   fecha_max,
+                    'canasta_max':   canasta_max,
+                    'fecha_min':     fecha_min,
+                    'fecha_max':     fecha_max,
+                    'ponderaciones': {
+                        col: df_pond[col].round(4).to_dict()
+                        for col in df_pond.columns
+                    },
                 })
                 return
 
@@ -188,6 +208,7 @@ class handler(BaseHTTPRequestHandler):
                 'isal':        [safe_round(v) for v in df_isr['ISAL']],
                 'fecha_min':   fecha_min,
                 'fecha_max':   fecha_max,
+                'fecha_datos': df_isr['fecha'].iloc[-1],   # último mes con datos reales en ambas series
                 'canasta_max': canasta_max,
                 'ultimo_isr':  safe_round(df_isr['ISR'].iloc[-1]),
                 'clase':       clase,

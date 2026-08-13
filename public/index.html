@@ -136,7 +136,69 @@
       color: #0d0a00;
     }
 
-    /* ── "No sé" class calculator ───────────────────────────────── */
+    /* ── Info tooltip ───────────────────────────────────────────── */
+    .info-tip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--border);
+      color: var(--txt-2);
+      font-size: .62rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: help;
+      flex-shrink: 0;
+      transition: background .15s, color .15s;
+    }
+    .info-tip:hover, .info-tip:focus {
+      background: var(--amber-dim);
+      color: var(--amber);
+      outline: none;
+    }
+    .info-tip .tip-bubble {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      width: 220px;
+      background: var(--card-hi);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-s);
+      padding: 10px 12px;
+      font-size: .73rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--txt);
+      text-transform: none;
+      letter-spacing: normal;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .15s, transform .15s;
+      z-index: 20;
+    }
+    .info-tip .tip-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--card-hi);
+    }
+    .info-tip:hover .tip-bubble,
+    .info-tip:focus .tip-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
     .nose-panel {
       background: var(--card);
       border: 1px solid var(--border);
@@ -211,7 +273,74 @@
       color: var(--txt);
     }
 
-    .detected-class {
+    /* ── Panel: ¿Qué pesa más en tu canasta? ──────────────────────── */
+    .canasta-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: none;
+      border: none;
+      border-top: 1px solid var(--border-s);
+      padding: 10px 2px 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .76rem;
+      font-weight: 500;
+      color: var(--txt-2);
+      cursor: pointer;
+      transition: color .15s;
+    }
+    .canasta-toggle:hover { color: var(--amber); }
+    .canasta-toggle-icon {
+      font-size: .7rem;
+      transition: transform .2s;
+    }
+    .canasta-toggle.open .canasta-toggle-icon { transform: rotate(180deg); }
+
+    .canasta-panel {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 12px;
+      animation: slideDown .25s ease;
+    }
+    .canasta-panel.visible { display: flex; }
+
+    .canasta-bars { display: flex; flex-direction: column; gap: 9px; }
+    .canasta-bar-row { display: flex; flex-direction: column; gap: 4px; }
+    .canasta-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: .73rem;
+      color: var(--txt);
+    }
+    .canasta-bar-label span:last-child {
+      color: var(--amber);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .canasta-bar-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .canasta-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber), #f2cf7e);
+      border-radius: 3px;
+      transition: width .4s ease;
+    }
+    .canasta-compare {
+      font-size: .73rem;
+      color: var(--txt-2);
+      line-height: 1.55;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-s);
+      padding: 9px 11px;
+    }
+    .canasta-compare strong { color: var(--txt); }
       display: flex; align-items: center; gap: 8px;
       background: var(--amber-dim);
       border: 1px solid rgba(232,184,75,.2);
@@ -472,7 +601,13 @@
     }
     .state-error.visible { display: block; }
 
-    /* ── Responsive ─────────────────────────────────────────────── */
+    .mini-kpis-note {
+      font-size: .68rem;
+      color: var(--txt-3);
+      line-height: 1.5;
+      padding-top: 4px;
+      grid-column: 1 / -1;
+    }
     @media (max-width: 820px) {
       header { padding: 20px 20px 16px; }
       .body  { grid-template-columns: 1fr; }
@@ -512,7 +647,14 @@
 
       <!-- Clase Social -->
       <div class="control-group">
-        <span class="control-label">Tu clase social</span>
+        <span class="label-row">
+          <span class="control-label">Tu clase social</span>
+          <span class="info-tip" tabindex="0">?
+            <span class="tip-bubble">
+              Definida por tu ingreso familiar per cápita en relación al costo de la Canasta Básica. No es solo cuánto ganás, sino en qué gastás: cada clase consume una "canasta" de productos distinta.
+            </span>
+          </span>
+        </span>
         <div class="seg" id="seg-clase">
           <button data-val="Alta">Alta</button>
           <button data-val="Media">Media</button>
@@ -545,11 +687,30 @@
             <span>Tu clase estimada: <strong id="clase-estimada">—</strong></span>
           </div>
         </div>
+
+        <!-- Panel: qué pesa más en la canasta -->
+        <button class="canasta-toggle" id="canasta-toggle">
+          <span>¿Qué pesa más en tu canasta?</span>
+          <span class="canasta-toggle-icon">▾</span>
+        </button>
+        <div class="canasta-panel" id="canasta-panel">
+          <div class="canasta-bars" id="canasta-bars"></div>
+          <p class="canasta-compare" id="canasta-compare"></p>
+        </div>
       </div>
 
       <!-- Origen de Ingresos -->
       <div class="control-group">
-        <span class="control-label">Origen de tus ingresos</span>
+        <span class="label-row">
+          <span class="control-label">Origen de tus ingresos</span>
+          <span class="info-tip" tabindex="0">?
+            <span class="tip-bubble">
+              <strong>Privado:</strong> trabajo registrado en empresas privadas.
+              <strong>Público:</strong> empleo estatal.
+              <strong>Informal:</strong> trabajo sin registrar. Cada sector tuvo una evolución salarial distinta.
+            </span>
+          </span>
+        </span>
         <div class="seg" id="seg-salario">
           <button data-val="privado">Privado</button>
           <button data-val="publico">Público</button>
@@ -560,7 +721,14 @@
 
       <!-- Fecha de inicio -->
       <div class="control-group" id="fecha-group" style="display:none">
-        <span class="control-label">Analizar desde</span>
+        <span class="label-row">
+          <span class="control-label">Analizar desde</span>
+          <span class="info-tip" tabindex="0">?
+            <span class="tip-bubble">
+              Es el punto de partida del cálculo: todos los índices arrancan en 100 en este mes, para poder comparar cuánto subió cada cosa desde entonces.
+            </span>
+          </span>
+        </span>
         <input type="month" id="input-fecha" />
         <span style="font-size:.72rem;color:var(--txt-3)">
           Todos los índices se rebasan a 100 en esta fecha.
@@ -600,6 +768,11 @@
           <div class="kpi-main">
             <div class="kpi-eyebrow-row">
               <span class="kpi-eyebrow">Poder adquisitivo actual</span>
+              <span class="info-tip" tabindex="0">?
+                <span class="tip-bubble">
+                  <strong>ISR</strong> = Índice de Salario Real. Compara cuánto subió tu salario contra cuánto subieron los precios que vos consumís. 100 = mismo poder de compra que en el mes base.
+                </span>
+              </span>
               <span class="trend-badge" id="trend-badge"></span>
             </div>
             <div class="kpi-number neutral" id="kpi-number">—</div>
@@ -623,6 +796,9 @@
               <div class="mini-kpi-val" id="mini-isal" style="color:var(--blue)">—</div>
             </div>
           </div>
+          <p class="mini-kpis-note">
+            Ambos acumulados corresponden al mismo período y son los componentes directos del ISR: si Salarios > Inflación → ISR &gt; 100.
+          </p>
         </div>
 
         <!-- Gráfico -->
@@ -655,6 +831,22 @@
 </div>
 
 <script>
+// ── Mapeo de rubros a nombres cortos para el sidebar ─────────────────────────
+const RUBRO_SHORT = {
+  'Alimentos y bebidas no alcohólicas':                       'Alimentos y bebidas',
+  'Bebidas alcohólicas y tabaco':                              'Alcohol y tabaco',
+  'Prendas de vestir y calzado':                               'Indumentaria',
+  'Vivienda, agua, electricidad, gas y otros combustibles':    'Vivienda y servicios',
+  'Equipamiento y mantenimiento del hogar':                    'Equip. del hogar',
+  'Salud':                                                     'Salud',
+  'Transporte':                                                'Transporte',
+  'Comunicaciones':                                            'Comunicaciones',
+  'Recreación y cultura':                                      'Recreación',
+  'Educación':                                                 'Educación',
+  'Restaurantes y hoteles':                                    'Restaurantes/hoteles',
+  'Bienes y servicios varios':                                 'Otros bienes/serv.',
+};
+
 // ── Estado ──────────────────────────────────────────────────────────────────
 const S = {
   clase:      null,   // 'Alta' | 'Media' | 'Baja'
@@ -734,6 +926,53 @@ function updateNoSeClase() {
   if (!c) return;
   $('clase-estimada').textContent = c;
   S.clase = c;
+  renderCanasta(c);
+}
+
+// ── Panel: ¿Qué pesa más en tu canasta? ───────────────────────────────────
+function renderCanasta(clase) {
+  if (!S.meta || !S.meta.ponderaciones || !clase) return;
+  const pesos = S.meta.ponderaciones[clase];
+  if (!pesos) return;
+
+  // Top 4 rubros de la clase seleccionada
+  const ordenados = Object.entries(pesos).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  const maxPeso = ordenados[0][1];
+
+  $('canasta-bars').innerHTML = ordenados.map(([rubro, peso]) => {
+    const pct = (peso * 100).toFixed(1);
+    const width = (peso / maxPeso) * 100;
+    const nombre = RUBRO_SHORT[rubro] || rubro;
+    return `
+      <div class="canasta-bar-row">
+        <div class="canasta-bar-label">
+          <span>${nombre}</span>
+          <span>${pct}%</span>
+        </div>
+        <div class="canasta-bar-track">
+          <div class="canasta-bar-fill" style="width:${width}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Comparación del rubro top contra la clase opuesta
+  const [topRubro, topPeso] = ordenados[0];
+  const contraste = clase === 'Alta' ? 'Baja' : 'Alta';
+  const pesoContraste = S.meta.ponderaciones[contraste][topRubro];
+  const diff = (topPeso - pesoContraste) * 100;
+  const nombreTop = RUBRO_SHORT[topRubro] || topRubro;
+
+  if (Math.abs(diff) < 0.3) {
+    $('canasta-compare').innerHTML =
+      `En <strong>${nombreTop}</strong>, tu clase gasta proporcionalmente parecido a la Clase ${contraste}.`;
+  } else if (diff > 0) {
+    $('canasta-compare').innerHTML =
+      `Tu clase gasta <strong>${diff.toFixed(1)} puntos más</strong> en ${nombreTop} que la Clase ${contraste}. Por eso la inflación de ese rubro te golpea más fuerte.`;
+  } else {
+    $('canasta-compare').innerHTML =
+      `Tu clase gasta <strong>${Math.abs(diff).toFixed(1)} puntos menos</strong> en ${nombreTop} que la Clase ${contraste}.`;
+  }
 }
 
 function setupNoSePanel() {
@@ -804,8 +1043,12 @@ function renderResults(data) {
     ? `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy tenés $${isr.toFixed(0)}.`
     : `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy te quedan $${isr.toFixed(0)}.`;
   $('kpi-detail').textContent = label;
+  const fechaDatos = fmtMonth(data.fecha_datos || data.fechas[data.fechas.length-1]);
+  const trailing   = data.fecha_datos && data.fecha_datos !== data.fechas[data.fechas.length-1]
+    ? ` · datos hasta ${fechaDatos}`
+    : '';
   $('kpi-detail-sub').textContent =
-    `Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaFin}`;
+    `Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaDatos}${trailing}`;
 
   // Badge de tendencia (últimos 6 meses, o todo el período si hay menos datos)
   renderTrendBadge(data);
@@ -1016,10 +1259,21 @@ async function main() {
     $('nose-panel').classList.toggle('visible', isNose);
     if (!isNose) {
       S.clase = val;
+      renderCanasta(val);
     } else {
       updateNoSeClase();
     }
     maybeAnalyze();
+  });
+
+  // Toggle panel "¿Qué pesa más en tu canasta?"
+  $('canasta-toggle').addEventListener('click', () => {
+    const panel = $('canasta-panel');
+    const btn = $('canasta-toggle');
+    const willShow = !panel.classList.contains('visible');
+    panel.classList.toggle('visible', willShow);
+    btn.classList.toggle('open', willShow);
+    if (willShow && S.clase) renderCanasta(S.clase);
   });
 
   // Salario

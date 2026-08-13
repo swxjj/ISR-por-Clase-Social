@@ -160,9 +160,9 @@
     }
     .info-tip .tip-bubble {
       position: absolute;
-      bottom: calc(100% + 8px);
+      top: calc(100% + 8px);
       left: 50%;
-      transform: translateX(-50%) translateY(4px);
+      transform: translateX(-50%) translateY(-4px);
       width: 220px;
       background: var(--card-hi);
       border: 1px solid var(--border);
@@ -183,10 +183,10 @@
     .info-tip .tip-bubble::after {
       content: '';
       position: absolute;
-      top: 100%; left: 50%;
+      bottom: 100%; left: 50%;
       transform: translateX(-50%);
       border: 5px solid transparent;
-      border-top-color: var(--card-hi);
+      border-bottom-color: var(--card-hi);
     }
     .info-tip:hover .tip-bubble,
     .info-tip:focus .tip-bubble {

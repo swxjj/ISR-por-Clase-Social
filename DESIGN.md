@@ -2,59 +2,70 @@
 name: ¿Ganamos o Perdimos?
 description: Class-aware inflation analysis for Argentine workers
 colors:
-  bg-dark: "#070d1a"
-  bg-card: "#0d1826"
-  bg-card-elevated: "#131f33"
-  bg-hover: "#19293f"
-  accent-amber: "#e8b84b"
-  accent-amber-dim: "rgba(232,184,75,.10)"
-  accent-blue: "#4f8ef7"
-  accent-blue-dim: "rgba(79,142,247,.14)"
-  signal-gain: "#2ed573"
-  signal-gain-dim: "rgba(46,213,115,.10)"
-  signal-loss: "#f74b5e"
-  signal-loss-dim: "rgba(247,75,94,.10)"
-  text-primary: "#c8d2e0"
-  text-secondary: "#6b7a8e"
-  text-tertiary: "#384555"
-  border-default: "rgba(255,255,255,.07)"
+  bg-dark: "#070b12"
+  bg-card: "#0d1527"
+  bg-card-elevated: "#142036"
+  bg-hover: "#1b2a47"
+  accent-amber: "#38bdf8"
+  accent-amber-dim: "rgba(56,189,248,.10)"
+  accent-blue: "#38bdf8"
+  accent-blue-dim: "rgba(56,189,248,.14)"
+  signal-gain: "#10b981"
+  signal-gain-dim: "rgba(16,185,129,.12)"
+  signal-loss: "#f43f5e"
+  signal-loss-dim: "rgba(244,63,94,.12)"
+  text-primary: "#ffffff"
+  text-secondary: "#cbd5e1"
+  text-tertiary: "#94a3b8"
+  border-default: "rgba(255,255,255,.08)"
   border-subtle: "rgba(255,255,255,.04)"
 typography:
   display:
-    fontFamily: "DM Serif Display, Georgia, serif"
-    fontSize: "clamp(1.55rem, 4vw, 6rem)"
-    fontWeight: 400
+    fontFamily: "Outfit, sans-serif"
+    fontSize: "clamp(2rem, 5vw, 6rem)"
+    fontWeight: 800
     lineHeight: 1
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.03em"
   headline:
-    fontFamily: "DM Serif Display, Georgia, serif"
+    fontFamily: "Outfit, sans-serif"
     fontSize: "1.55rem"
-    fontWeight: 400
+    fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "DM Sans, system-ui, sans-serif"
+    fontFamily: "Outfit, sans-serif"
     fontSize: "0.85rem"
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "0.06em"
     textTransform: "uppercase"
   body:
-    fontFamily: "DM Sans, system-ui, sans-serif"
+    fontFamily: "Outfit, sans-serif"
     fontSize: "0.9rem"
     fontWeight: 400
     lineHeight: 1.55
     letterSpacing: "normal"
   label:
-    fontFamily: "DM Sans, system-ui, sans-serif"
-    fontSize: "0.7rem"
+    fontFamily: "Outfit, sans-serif"
+    fontSize: "0.78rem"
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "0.08em"
     textTransform: "uppercase"
+  subheadline:
+    fontFamily: "Outfit, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 600
+    lineHeight: 1.3
+  small:
+    fontFamily: "Outfit, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 400
+    lineHeight: 1.4
 rounded:
   sm: "8px"
   md: "12px"
+  pill: "100px"
 spacing:
   xs: "2px"
   sm: "8px"

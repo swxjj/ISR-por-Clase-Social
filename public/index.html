@@ -22,15 +22,22 @@
       --hover:     #19293f;
       --amber:     #e8b84b;
       --amber-dim: rgba(232,184,75,.10);
+      --amber-border: rgba(232,184,75,.2);
+      --amber-accent: #f2cf7e;
       --gain:      #2ed573;
       --gain-dim:  rgba(46,213,115,.10);
       --loss:      #f74b5e;
-      --loss-dim:  rgba(247,75,94,.10);
+      --loss-dim:  rgba(247,75,94,.08);
+      --loss-border: rgba(247,75,94,.2);
       --blue:      #4f8ef7;
       --blue-dim:  rgba(79,142,247,.14);
+      --blue-border: rgba(79,142,247,.35);
       --txt:       #c8d2e0;
+      --txt-hi:    #e8edf5;
       --txt-2:     #6b7a8e;
       --txt-3:     #384555;
+      --txt-dark:  #0d0a00;
+      --shadow:    rgba(0,0,0,.4);
       --border:    rgba(255,255,255,.07);
       --border-s:  rgba(255,255,255,.04);
       --radius:    12px;
@@ -67,7 +74,7 @@
       font-size: 1.55rem;
       font-weight: 400;
       letter-spacing: -.02em;
-      color: #e8edf5;
+      color: var(--txt-hi);
     }
     header h1 span { color: var(--amber); }
     .header-sub {
@@ -120,7 +127,7 @@
       flex: 1;
       background: none;
       border: none;
-      border-radius: 6px;
+      border-radius: var(--radius-s);
       padding: 7px 6px;
       font-family: 'DM Sans', sans-serif;
       font-size: .8rem;
@@ -133,7 +140,7 @@
     .seg button:hover { background: var(--hover); color: var(--txt); }
     .seg button.active {
       background: var(--amber);
-      color: #0d0a00;
+      color: var(--txt-dark);
     }
 
     /* ── Info tooltip ───────────────────────────────────────────── */
@@ -174,7 +181,7 @@
       color: var(--txt);
       text-transform: none;
       letter-spacing: normal;
-      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+      box-shadow: 0 8px 24px var(--shadow);
       opacity: 0;
       pointer-events: none;
       transition: opacity .15s, transform .15s;
@@ -327,7 +334,7 @@
     }
     .canasta-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--amber), #f2cf7e);
+      background: linear-gradient(90deg, var(--amber), var(--amber-accent));
       border-radius: 3px;
       transition: width .4s ease;
     }
@@ -343,7 +350,7 @@
     .canasta-compare strong { color: var(--txt); }
       display: flex; align-items: center; gap: 8px;
       background: var(--amber-dim);
-      border: 1px solid rgba(232,184,75,.2);
+      border: 1px solid var(--amber-border);
       border-radius: var(--radius-s);
       padding: 8px 12px;
       font-size: .8rem;
@@ -367,7 +374,7 @@
       color-scheme: dark;
     }
     input[type=month]:hover, input[type=month]:focus {
-      border-color: rgba(232,184,75,.4);
+      border-color: var(--amber-border);
     }
 
     .sidebar-footer {
@@ -487,7 +494,7 @@
       font-family: 'DM Serif Display', serif;
       font-size: 1.25rem;
       font-weight: 400;
-      color: #dde4ef;
+      color: var(--txt);
     }
     .kpi-detail { line-height: 1.6; }
     .kpi-detail-main {
@@ -556,7 +563,7 @@
     }
     .toggle-componentes.active {
       background: var(--blue-dim);
-      border-color: rgba(79,142,247,.35);
+      border-color: var(--blue-border);
       color: var(--blue);
     }
     .chart-caption {
@@ -592,8 +599,8 @@
     /* Error */
     .state-error {
       display: none;
-      background: rgba(247,75,94,.08);
-      border: 1px solid rgba(247,75,94,.2);
+      background: var(--loss-dim);
+      border: 1px solid var(--loss-border);
       border-radius: var(--radius);
       padding: 16px 20px;
       color: var(--loss);
@@ -627,11 +634,188 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
+
+    /* Class detection modal */
+    .class-detection-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .class-detection-modal.visible {
+      display: flex;
+    }
+    .class-detection-modal-content {
+      background: var(--card-hi);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 16px 48px var(--shadow);
+      animation: slideDown .25s ease;
+    }
+    .class-detection-modal-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+      color: var(--txt-hi);
+    }
+    .class-detection-modal-content p {
+      font-size: .85rem;
+      color: var(--txt-2);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .class-detection-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--txt-2);
+    }
+    .form-group input[type="range"] {
+      cursor: pointer;
+    }
+    .salary-readout {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 8px;
+    }
+    .salary-readout-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--amber);
+    }
+    .salary-readout-unit {
+      font-size: .75rem;
+      color: var(--txt-2);
+    }
+    .class-estimate {
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-border);
+      border-radius: var(--radius-s);
+      padding: 16px;
+      text-align: center;
+    }
+    .class-estimate-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--txt-2);
+      margin-bottom: 8px;
+    }
+    .class-estimate-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--amber);
+      margin-bottom: 4px;
+    }
+    .class-estimate-confidence {
+      font-size: .73rem;
+      color: var(--txt-2);
+    }
+    .class-detection-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .class-detection-actions button {
+      flex: 1;
+      padding: 11px 16px;
+      border: none;
+      border-radius: var(--radius-s);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .class-detection-actions .btn-confirm {
+      background: var(--amber);
+      color: var(--txt-dark);
+    }
+    .class-detection-actions .btn-confirm:hover {
+      background: var(--amber-accent);
+    }
+    .class-detection-actions .btn-cancel {
+      background: var(--card);
+      color: var(--txt);
+      border: 1px solid var(--border);
+    }
+    .class-detection-actions .btn-cancel:hover {
+      background: var(--hover);
+    }
   </style>
 </head>
 
 <body>
 <div class="app">
+  <!-- Class Detection Modal -->
+  <div class="class-detection-modal" id="classDetectionModal">
+    <div class="class-detection-modal-content">
+      <h2>¿Cuál es tu clase social?</h2>
+      <p>Necesitamos entender tu situación para hacer el análisis más preciso.</p>
+      
+      <div class="class-detection-form">
+        <!-- Income Range -->
+        <div class="form-group">
+          <label for="salary-slider">Ingreso mensual aproximado (ARS)</label>
+          <input type="range" id="salary-slider" min="200000" max="5000000" step="50000" value="1000000" />
+          <div class="salary-readout">
+            <span class="salary-readout-value" id="salary-display">$1.000.000</span>
+            <span class="salary-readout-unit">de ingreso</span>
+          </div>
+        </div>
+
+        <!-- Household Members -->
+        <div class="form-group">
+          <label for="household-size">Personas en el hogar que dependen de este ingreso</label>
+          <div class="counter" style="justify-content: center;">
+            <button class="counter-btn-minus" style="flex: 0; width: 32px;">−</button>
+            <input type="number" id="household-size" min="1" max="10" value="2" readonly style="flex: 0; width: 60px; text-align: center; background: transparent; border: none; color: var(--txt-hi); font-size: 1.25rem; font-family: 'DM Serif Display', serif;">
+            <button class="counter-btn-plus" style="flex: 0; width: 32px;">+</button>
+          </div>
+        </div>
+
+        <!-- Estimated Class -->
+        <div class="class-estimate">
+          <div class="class-estimate-label">Clase estimada:</div>
+          <div class="class-estimate-value" id="estimated-class">Media</div>
+          <div class="class-estimate-confidence" id="estimated-confidence">~80% de confianza</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="class-detection-actions">
+          <button class="btn-confirm" id="confirm-class">Usar esta clase</button>
+          <button class="btn-cancel" id="change-class">Elegir otra</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Header ─────────────────────────────────────────────────── -->
   <header>
@@ -764,13 +948,16 @@
       <div class="results" id="results">
 
         <div class="kpi-row">
+          <!-- Context: class, sector, date range -->
+          <div class="results-context" id="results-context" style="grid-column: 1 / -1; font-size: .75rem; color: var(--txt-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em;"></div>
+          
           <!-- KPI principal -->
           <div class="kpi-main">
             <div class="kpi-eyebrow-row">
               <span class="kpi-eyebrow">Poder adquisitivo actual</span>
               <span class="info-tip" tabindex="0">?
                 <span class="tip-bubble">
-                  <strong>ISR</strong> = Índice de Salario Real. Compara cuánto subió tu salario contra cuánto subieron los precios que vos consumís. 100 = mismo poder de compra que en el mes base.
+                  <strong>ISR (Índice de Salario Real):</strong> Compara cuánto subió tu salario contra cuánto subieron los precios que vos consumís. 100 = mismo poder de compra que en el mes base.
                 </span>
               </span>
               <span class="trend-badge" id="trend-badge"></span>
@@ -788,16 +975,16 @@
           <!-- Mini KPIs -->
           <div class="mini-kpis">
             <div class="mini-kpi">
-              <div class="mini-kpi-label">Inflación acum.</div>
+              <div class="mini-kpi-label">Inflación total</div>
               <div class="mini-kpi-val" id="mini-ipc" style="color:var(--loss)">—</div>
             </div>
             <div class="mini-kpi">
-              <div class="mini-kpi-label">Salarios acum.</div>
+              <div class="mini-kpi-label">Salarios total</div>
               <div class="mini-kpi-val" id="mini-isal" style="color:var(--blue)">—</div>
             </div>
           </div>
           <p class="mini-kpis-note">
-            Ambos acumulados corresponden al mismo período y son los componentes directos del ISR: si Salarios > Inflación → ISR &gt; 100.
+            Los totales corresponden al período analizado y son los componentes del ISR: si tu Salario subió más que Inflación, ganaste poder adquisitivo (ISR &gt; 100).
           </p>
         </div>
 
@@ -819,9 +1006,9 @@
             <canvas id="chart"></canvas>
           </div>
           <p class="chart-caption" id="chart-caption">
-            <strong style="color:var(--blue)">ISR</strong> = cuánto podés comprar realmente ·
-            <strong style="color:var(--amber)">Salario nominal</strong> = cuánto subió tu sueldo en pesos ·
-            <strong style="color:var(--loss)">Inflación de tu clase</strong> = cuánto subieron los precios que más consumís
+            <strong style="color:var(--blue)">ISR (tu poder real)</strong> = cuánto podés comprar realmente ·
+            <strong style="color:var(--amber)">Salario (nominal)</strong> = cuánto subió tu sueldo en pesos ·
+            <strong style="color:var(--loss)">Inflación de tu canasta</strong> = cuánto subieron los precios de lo que consumís
           </p>
         </div>
 
@@ -861,6 +1048,123 @@ const S = {
   // UI
   showComponentes: false,
 };
+
+// ── Class Detection Modal ────────────────────────────────────────────────────
+function initClassDetectionModal() {
+  const modal = $('classDetectionModal');
+  const salarySlider = $('salary-slider');
+  const salaryDisplay = $('salary-display');
+  const householdSize = $('household-size');
+  const estimatedClass = $('estimated-class');
+  const estimatedConfidence = $('estimated-confidence');
+  const confirmBtn = $('confirm-class');
+  const changeBtn = $('change-class');
+
+  // Check if user has already gone through modal (stored in localStorage)
+  const hasSeenModal = localStorage.getItem('classDetectionModalSeen');
+
+  if (hasSeenModal) {
+    modal.classList.remove('visible');
+    // Load saved class if exists
+    const savedClass = localStorage.getItem('selectedClass');
+    if (savedClass) {
+      S.clase = savedClass;
+    }
+    return;
+  }
+
+  // Show modal on first load
+  modal.classList.add('visible');
+
+  // Update salary display
+  function updateSalaryDisplay() {
+    const salary = parseInt(salarySlider.value);
+    salaryDisplay.textContent = '$' + fmt(salary);
+    updateEstimatedClass();
+  }
+
+  // Estimate class based on salary and household size
+  function updateEstimatedClass() {
+    const salary = parseInt(salarySlider.value);
+    const household = parseInt(householdSize.value);
+    const perCapita = salary / household;
+
+    let className, confidence;
+
+    // Simple class estimation based on per-capita income
+    if (perCapita > 1_500_000) {
+      className = 'Alta';
+      confidence = '~75% de confianza';
+    } else if (perCapita > 600_000) {
+      className = 'Media';
+      confidence = '~80% de confianza';
+    } else {
+      className = 'Baja';
+      confidence = '~70% de confianza';
+    }
+
+    estimatedClass.textContent = className;
+    estimatedConfidence.textContent = confidence;
+  }
+
+  // Counter buttons for household size
+  const minusBtn = document.querySelector('.counter-btn-minus');
+  const plusBtn = document.querySelector('.counter-btn-plus');
+
+  minusBtn.addEventListener('click', () => {
+    const current = parseInt(householdSize.value);
+    if (current > 1) {
+      householdSize.value = current - 1;
+      updateEstimatedClass();
+    }
+  });
+
+  plusBtn.addEventListener('click', () => {
+    const current = parseInt(householdSize.value);
+    if (current < 10) {
+      householdSize.value = current + 1;
+      updateEstimatedClass();
+    }
+  });
+
+  // Slider event
+  salarySlider.addEventListener('input', updateSalaryDisplay);
+
+  // Confirm class
+  confirmBtn.addEventListener('click', () => {
+    const selectedClass = estimatedClass.textContent;
+    S.clase = selectedClass;
+    localStorage.setItem('selectedClass', selectedClass);
+    localStorage.setItem('classDetectionModalSeen', 'true');
+    modal.classList.remove('visible');
+    // Update sidebar class selector
+    updateClassSelector();
+  });
+
+  // Change class (show selector)
+  changeBtn.addEventListener('click', () => {
+    modal.classList.remove('visible');
+    // Focus on class selector in sidebar
+    const classSelector = document.querySelector('.seg.clase');
+    if (classSelector) {
+      classSelector.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  // Initial estimate
+  updateEstimatedClass();
+}
+
+// Update the class selector in sidebar to match detected class
+function updateClassSelector() {
+  const claseValue = S.clase ? S.clase.toLowerCase() : 'media';
+  const seg = $('seg-clase');
+  const btn = seg.querySelector(`button[data-val="${claseValue}"]`);
+  if (btn) {
+    seg.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
@@ -1001,6 +1305,24 @@ function maybeAnalyze() {
   if (!S.clase || !S.salario || !S.fecha) return;
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(analyze, 300);
+}
+
+// Update results context showing user's selections
+function updateResultsContext() {
+  const contextEl = $('results-context');
+  if (!contextEl) return;
+
+  const claseLabel = S.clase || '—';
+  const salarioLabel = {
+    'privado': 'Sector privado',
+    'publico': 'Sector público',
+    'informal': 'Informal',
+    'general': 'General'
+  }[S.salario] || S.salario || '—';
+
+  const fechaLabel = S.fecha ? fmtMonth(S.fecha + '-01') : '—';
+
+  contextEl.textContent = `${claseLabel} · ${salarioLabel} · ${fechaLabel}`;
 }
 
 async function analyze() {
@@ -1251,6 +1573,7 @@ function showError(msg) {
 // ── Bootstrap ────────────────────────────────────────────────────────────
 async function main() {
   await loadMeta();
+  initClassDetectionModal();
   setupNoSePanel();
 
   // Clase
@@ -1263,6 +1586,7 @@ async function main() {
     } else {
       updateNoSeClase();
     }
+    updateResultsContext();
     maybeAnalyze();
   });
 
@@ -1279,12 +1603,14 @@ async function main() {
   // Salario
   setupSeg('seg-salario', val => {
     S.salario = val;
+    updateResultsContext();
     maybeAnalyze();
   });
 
   // Fecha
   $('input-fecha').addEventListener('change', e => {
     S.fecha = e.target.value;
+    updateResultsContext();
     maybeAnalyze();
   });
 

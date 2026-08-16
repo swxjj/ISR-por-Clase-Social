@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-13T00:00:00Z",
+  "title": "Design System: ¿Ganamos o Perdimos?",
+  "extensions": {
+    "colorMeta": {
+      "bg-dark": {
+        "role": "background",
+        "displayName": "Deep Dark",
+        "canonical": "#070d1a",
+        "purpose": "Main page background. Darkest layer of the palette."
+      },
+      "bg-card": {
+        "role": "background",
+        "displayName": "Card Background",
+        "canonical": "#0d1826",
+        "purpose": "Default container and card fill. One step above page background."
+      },
+      "bg-card-elevated": {
+        "role": "background",
+        "displayName": "Elevated Surface",
+        "canonical": "#131f33",
+        "purpose": "Nested/floating elements. Creates depth above standard card."
+      },
+      "bg-hover": {
+        "role": "background",
+        "displayName": "Hover State",
+        "canonical": "#19293f",
+        "purpose": "Interactive hover background. Clear visual step for interactivity."
+      },
+      "accent-amber": {
+        "role": "primary",
+        "displayName": "Warm Amber",
+        "canonical": "#e8b84b",
+        "purpose": "Primary accent for active states, key affordances, top-level KPI callouts. Use sparingly (<10% of surface)."
+      },
+      "accent-blue": {
+        "role": "secondary",
+        "displayName": "Cool Blue",
+        "canonical": "#4f8ef7",
+        "purpose": "Secondary accent for subordinate metrics, component toggles, related data threads."
+      },
+      "signal-gain": {
+        "role": "success",
+        "displayName": "Gain Green",
+        "canonical": "#2ed573",
+        "purpose": "Positive trend. Salary outpaced inflation; user won. Always pair with ↑ icon."
+      },
+      "signal-loss": {
+        "role": "error",
+        "displayName": "Loss Red",
+        "canonical": "#f74b5e",
+        "purpose": "Negative trend. Inflation outpaced salary; user lost. Always pair with ↓ icon."
+      },
+      "text-primary": {
+        "role": "text",
+        "displayName": "Primary Text",
+        "canonical": "#c8d2e0",
+        "purpose": "Main body and UI labels. High contrast on dark backgrounds."
+      },
+      "text-secondary": {
+        "role": "text",
+        "displayName": "Secondary Text",
+        "canonical": "#6b7a8e",
+        "purpose": "Tertiary labels, help text, subtle metadata. Lower contrast."
+      },
+      "text-tertiary": {
+        "role": "text",
+        "displayName": "Tertiary Text",
+        "canonical": "#384555",
+        "purpose": "Captions, footers, disabled states, very subtle content."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero KPI numbers. Large, serif, authoritative. Occupies center of attention.",
+        "weights": [400]
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page and section titles. Serif for refinement and authority.",
+        "weights": [400]
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Small section headers, control labels, chart legends. Uppercase, tight tracking.",
+        "weights": [600]
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Main narrative and KPI context. Default reading text. Aim for ~70ch line length.",
+        "weights": [400]
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, captions, UI annotations. Consistent visual rhythm with uppercase.",
+        "weights": [600]
+      }
+    },
+    "shadows": [
+      {
+        "name": "tooltip",
+        "value": "0 8px 24px rgba(0,0,0,.4)",
+        "purpose": "Floating elements: tooltips, popovers, dropdowns. Signals visual detachment."
+      }
+    ],
+    "motion": [
+      {
+        "name": "slide-down",
+        "value": "@keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }",
+        "duration": "0.25s ease",
+        "purpose": "Panel reveal animation (canasta toggle, class detector)."
+      },
+      {
+        "name": "fade",
+        "value": "opacity 0.15s linear",
+        "purpose": "Fade in/out for tooltips and UI state changes."
+      },
+      {
+        "name": "transform-hover",
+        "value": "transform 0.15s, background 0.15s",
+        "purpose": "Button and interactive element hover transitions."
+      },
+      {
+        "name": "spinner",
+        "value": "@keyframes spin { to { transform: rotate(360deg); } }",
+        "duration": "0.7s linear infinite",
+        "purpose": "Loading spinner continuous rotation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "820px",
+        "purpose": "Layout switches from sidebar-plus-main to stacked single column. Sidebar moves below header."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Segmented Control",
+      "kind": "button",
+      "refersTo": "button-segmented-default / button-segmented-active",
+      "description": "Multi-option selector (Alta/Media/Baja/No sé or Privado/Público/Informal/General).",
+      "html": "<div class=\"seg\" id=\"seg-clase\">\n  <button data-val=\"Alta\">Alta</button>\n  <button data-val=\"Media\" class=\"active\">Media</button>\n  <button data-val=\"Baja\">Baja</button>\n  <button data-val=\"nose\">No sé</button>\n</div>",
+      "css": ".seg {\n  display: flex;\n  background: var(--card);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 3px;\n  gap: 2px;\n}\n.seg button {\n  flex: 1;\n  background: none;\n  border: none;\n  border-radius: 6px;\n  padding: 7px 6px;\n  font-family: 'DM Sans', sans-serif;\n  font-size: 0.8rem;\n  font-weight: 500;\n  color: var(--txt-2);\n  cursor: pointer;\n  transition: background 0.18s, color 0.18s;\n}\n.seg button:hover {\n  background: var(--hover);\n  color: var(--txt);\n}\n.seg button.active {\n  background: var(--amber);\n  color: #0d0a00;\n}"
+    },
+    {
+      "name": "Toggle Button (Pill)",
+      "kind": "button",
+      "refersTo": "button-toggle-default / button-toggle-active",
+      "description": "Rounded pill toggle for secondary controls (e.g., 'Toggle components' in chart header).",
+      "html": "<button class=\"toggle-componentes\">Mostrar componentes</button>\n<button class=\"toggle-componentes active\">Mostrar componentes</button>",
+      "css": ".toggle-componentes {\n  background: var(--card-hi);\n  border: 1px solid var(--border);\n  border-radius: 100px;\n  padding: 5px 12px;\n  font-family: 'DM Sans', sans-serif;\n  font-size: 0.72rem;\n  font-weight: 500;\n  color: var(--txt-2);\n  cursor: pointer;\n  transition: background 0.15s, color 0.15s, border-color 0.15s;\n  white-space: nowrap;\n}\n.toggle-componentes:hover {\n  background: var(--hover);\n  color: var(--txt);\n}\n.toggle-componentes.active {\n  background: var(--blue-dim);\n  border-color: rgba(79,142,247,.35);\n  color: var(--blue);\n}"
+    },
+    {
+      "name": "Info Tooltip",
+      "kind": "custom",
+      "description": "Circular icon with hover popover explaining a concept.",
+      "html": "<span class=\"info-tip\" tabindex=\"0\">?\n  <span class=\"tip-bubble\">\n    Definida por tu ingreso familiar per cápita en relación al costo de la Canasta Básica.\n  </span>\n</span>",
+      "css": ".info-tip {\n  position: relative;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 14px;\n  height: 14px;\n  border-radius: 50%;\n  background: var(--border);\n  color: var(--txt-2);\n  font-size: 0.62rem;\n  font-weight: 700;\n  cursor: help;\n  flex-shrink: 0;\n  transition: background 0.15s, color 0.15s;\n}\n.info-tip:hover,\n.info-tip:focus {\n  background: var(--amber-dim);\n  color: var(--amber);\n  outline: none;\n}\n.info-tip .tip-bubble {\n  position: absolute;\n  top: calc(100% + 8px);\n  left: 50%;\n  transform: translateX(-50%) translateY(-4px);\n  width: 220px;\n  background: var(--card-hi);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 10px 12px;\n  font-size: 0.73rem;\n  font-weight: 400;\n  line-height: 1.5;\n  color: var(--txt);\n  box-shadow: 0 8px 24px rgba(0,0,0,.4);\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity 0.15s, transform 0.15s;\n  z-index: 20;\n}\n.info-tip:hover .tip-bubble,\n.info-tip:focus .tip-bubble {\n  opacity: 1;\n  transform: translateX(-50%) translateY(0);\n  pointer-events: auto;\n}"
+    },
+    {
+      "name": "Card Container",
+      "kind": "card",
+      "refersTo": "card-container",
+      "description": "Primary container for results and major panels.",
+      "html": "<div class=\"chart-card\">\n  <h2>Your Chart</h2>\n</div>",
+      "css": ".chart-card {\n  background: var(--card);\n  border: 1px solid var(--border);\n  border-radius: 12px;\n  padding: 20px 20px 16px;\n  flex: 1;\n}"
+    },
+    {
+      "name": "KPI Number",
+      "kind": "custom",
+      "description": "Large serif display number showing Real Salary Index (ISR). Color changes by trend.",
+      "html": "<div class=\"kpi-number neutral\" id=\"kpi-number\">108</div>\n<div class=\"kpi-number gain\">112</div>\n<div class=\"kpi-number loss\">92</div>",
+      "css": ".kpi-number {\n  font-family: 'DM Serif Display', serif;\n  font-size: 6rem;\n  line-height: 1;\n  letter-spacing: -0.04em;\n  transition: color 0.5s ease;\n  font-variant-numeric: tabular-nums;\n}\n.kpi-number.gain { color: var(--gain); }\n.kpi-number.loss { color: var(--loss); }\n.kpi-number.neutral { color: var(--txt); }"
+    },
+    {
+      "name": "Trend Badge",
+      "kind": "chip",
+      "refersTo": "badge-gain / badge-loss",
+      "description": "Compact pill showing trend direction and magnitude. Paired with icon (↑ or ↓).",
+      "html": "<span class=\"trend-badge gain\">↑ +8.5%</span>\n<span class=\"trend-badge loss\">↓ -5.2%</span>\n<span class=\"trend-badge flat\">→ 0.1%</span>",
+      "css": ".trend-badge {\n  font-size: 0.7rem;\n  font-weight: 600;\n  padding: 2px 8px;\n  border-radius: 100px;\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  font-variant-numeric: tabular-nums;\n}\n.trend-badge.up {\n  background: var(--gain-dim);\n  color: var(--gain);\n}\n.trend-badge.down {\n  background: var(--loss-dim);\n  color: var(--loss);\n}\n.trend-badge.flat {\n  background: var(--border);\n  color: var(--txt-2);\n}"
+    },
+    {
+      "name": "Range Slider",
+      "kind": "input",
+      "description": "Custom-styled range input for salary amount slider.",
+      "html": "<input type=\"range\" id=\"slider-salario\n  min=\"100000\" max=\"10000000\" step=\"100000\" value=\"1000000\" />",
+      "css": "input[type=range] {\n  width: 100%;\n  -webkit-appearance: none;\n  appearance: none;\n  height: 4px;\n  border-radius: 2px;\n  background: var(--border);\n  outline: none;\n  cursor: pointer;\n}\ninput[type=range]::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: var(--amber);\n  cursor: pointer;\n  transition: transform 0.15s;\n}\ninput[type=range]::-webkit-slider-thumb:hover {\n  transform: scale(1.2);\n}"
+    },
+    {
+      "name": "Counter Control",
+      "kind": "input",
+      "description": "Three-part spinner for quantity (−/value/+).",
+      "html": "<div class=\"counter\">\n  <button id=\"btn-menos\">−</button>\n  <span class=\"counter-val\" id=\"lbl-personas\">3</span>\n  <button id=\"btn-mas\">+</button>\n</div>",
+      "css": ".counter {\n  display: flex;\n  align-items: center;\n  gap: 0;\n}\n.counter button {\n  width: 32px;\n  height: 32px;\n  background: var(--card-hi);\n  border: 1px solid var(--border);\n  color: var(--txt);\n  font-size: 1rem;\n  cursor: pointer;\n  transition: background 0.15s;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.counter button:first-child {\n  border-radius: 8px 0 0 8px;\n}\n.counter button:last-child {\n  border-radius: 0 8px 8px 0;\n}\n.counter button:hover {\n  background: var(--hover);\n}\n.counter-val {\n  flex: 1;\n  text-align: center;\n  border: 1px solid var(--border);\n  border-left: none;\n  border-right: none;\n  height: 32px;\n  line-height: 32px;\n  font-size: 0.9rem;\n  font-weight: 600;\n  background: var(--card);\n  color: var(--txt);\n}"
+    },
+    {
+      "name": "Date Input",
+      "kind": "input",
+      "refersTo": "input-date",
+      "description": "Month picker for analysis start date.",
+      "html": "<input type=\"month\" id=\"input-fecha\" />",
+      "css": "input[type=month] {\n  width: 100%;\n  background: var(--card);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 8px 12px;\n  font-family: 'DM Sans', sans-serif;\n  font-size: 0.85rem;\n  color: var(--txt);\n  outline: none;\n  cursor: pointer;\n  transition: border-color 0.15s;\n  color-scheme: dark;\n}\ninput[type=month]:hover,\ninput[type=month]:focus {\n  border-color: rgba(232,184,75,.4);\n}"
+    },
+    {
+      "name": "Spinner / Loading",
+      "kind": "custom",
+      "description": "Animated loading indicator with amber-topped border.",
+      "html": "<div class=\"spinner\"></div>\n<span class=\"loading-msg\">Descargando datos del INDEC…</span>",
+      "css": ".spinner {\n  width: 36px;\n  height: 36px;\n  border: 2.5px solid var(--border);\n  border-top-color: var(--amber);\n  border-radius: 50%;\n  animation: spin 0.7s linear infinite;\n}\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Your Actual Income",
+    "overview": "This design system reveals the real purchasing power of workers by coupling employment data with class-based consumption patterns. The visual language is sophisticated but not intimidating—it speaks with precision and clarity to finance-aware and finance-curious audiences alike. A dark, high-contrast palette makes analytical narratives feel authoritative without coldness. The interaction model prioritizes user control: segmented selectors and transparent data refresh empower workers to explore their own inflation experience.",
+    "keyCharacteristics": [
+      "Dark, high-contrast foundation with purpose-driven color accents",
+      "Finance-rigorous but human-centered (not sterile)",
+      "Data-driven interactivity: users choose dates, sectors, classes",
+      "Real-time data sourcing, visible and trustworthy",
+      "Responsive two-column grid (sidebar controls, main results)"
+    ],
+    "rules": [
+      {
+        "name": "The Amber Restraint Rule",
+        "body": "Amber is the signature accent but must remain rare: active button states only, top-level KPI callouts, and critical affordances. Its rarity makes it authority.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signal Clarity Rule",
+        "body": "Green (gain) and red (loss) carry unambiguous semantic weight. Use nowhere else. Ensure accessibility: pair color with iconography (↑ or ↓).",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif-Serif-Sans Rule",
+        "body": "Serif (DM Serif Display) carries numbers and titles; sans (DM Sans) carries instruction and body text. Mixing within a surface breaks the visual contract.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Column Desktop Rule",
+        "body": "Sidebar-plus-main is the canonical layout. Sidebar is 300px and does not resize; it contains all input controls. Main results flex to fill.",
+        "section": "layout"
+      },
+      {
+        "name": "The Controlled Density Rule",
+        "body": "Every component has consistent internal padding. Cards: 20px. Inputs: 8–12px. This consistency makes the interface feel intentional.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are tonal, not shadowed. Layers are distinguished by background color steps (dark → card → elevated). Shadows appear only on floating interactive elements (tooltips, modals, dropdowns).",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two-Radius Rule",
+        "body": "Use 8px for tight UI (buttons, inputs, small surfaces). Use 12px for breathing room (cards, panels, major containers). Do not invent a third radius.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do use amber for primary interactive affordances only (active states, top-level KPI callouts)",
+      "Do use dark backgrounds (bg-dark, bg-card) as the structural foundation",
+      "Do pair signal colors (green/red) with directional icons (↑ / ↓) for accessibility",
+      "Do maintain the 300px fixed sidebar on desktop. It is the control center",
+      "Do use DM Serif Display for numbers and headlines. Its authority carries financial rigor",
+      "Do keep tooltips and popovers floating above the baseline (shadow, elevated color background)",
+      "Do respond to user input with immediate visual feedback (button active states, color transitions)",
+      "Do use the spacing rhythm (8/12/16/20/24/28/32px). Do not invent new gaps",
+      "Do ensure accessible color contrast (WCAG AA minimum on all text). Test with color-blindness simulators"
+    ],
+    "donts": [
+      "Don't use amber on more than 10% of any surface. Its rarity is its authority",
+      "Don't mix serif and sans randomly. Serif is for display/headlines; sans is for body/UI",
+      "Don't introduce a third border-radius. Stick to 8px (small) and 12px (medium)",
+      "Don't add shadows to non-floating elements. No shadow on cards; only tonal layers",
+      "Don't use color alone to communicate state (esp. gain/loss). Always pair with icon",
+      "Don't stack more than three levels of text hierarchy on one screen",
+      "Don't break the two-column sidebar layout at desktop without explicit product reason",
+      "Don't use sans serif for KPI numbers. Display font is serif-only for magnitude and gravitas"
+    ]
+  }
+}

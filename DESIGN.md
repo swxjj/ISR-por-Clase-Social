@@ -26,6 +26,11 @@ typography:
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.03em"
+  kpi:
+    fontFamily: "Outfit, sans-serif"
+    fontSize: "2.6rem"
+    fontWeight: 800
+    lineHeight: 1
   headline:
     fontFamily: "Outfit, sans-serif"
     fontSize: "1.55rem"

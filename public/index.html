@@ -58,6 +58,7 @@
       --font-display: 'Outfit', system-ui, sans-serif;
       --font-body: 'Outfit', system-ui, sans-serif;
       --size-display: clamp(2.2rem, 5vw, 6rem);
+      --size-kpi: 2.6rem;
       --size-headline: 1.55rem;
       --size-subheadline: 1.25rem;
       --size-title: 0.85rem;
@@ -367,46 +368,38 @@
     }
 
     /* ── Panel: ¿Qué pesa más en tu canasta? ──────────────────────── */
-    .canasta-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      background: none;
-      border: none;
-      border-top: 1px solid var(--border-s);
-      padding: 10px 2px 0;
-      font-family: var(--font-body);
-      font-size: var(--size-label);
-      font-weight: 500;
-      color: var(--txt-2);
-      cursor: pointer;
-      transition: color .15s;
-    }
-
-    .canasta-toggle:hover {
-      color: var(--amber);
-    }
-
-    .canasta-toggle-icon {
-      font-size: var(--size-label);
-      transition: transform .2s;
-    }
-
-    .canasta-toggle.open .canasta-toggle-icon {
-      transform: rotate(180deg);
-    }
-
     .canasta-panel {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 12px;
-      animation: slideDown .25s ease;
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      margin-top: 12px;
+      background: var(--card-hi);
+      border: 1px solid transparent;
+      border-radius: var(--radius-s);
+      transition: grid-template-rows 0.35s ease, opacity 0.35s ease, border-color 0.35s ease;
     }
 
     .canasta-panel.visible {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 12px;
+      border-color: var(--border-s);
+    }
+
+    .canasta-panel-inner {
+      overflow: hidden;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px 14px;
+    }
+
+    .canasta-header-title {
+      font-size: var(--size-label);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--amber);
     }
 
     .canasta-bars {
@@ -508,6 +501,38 @@
     select.select-fecha option {
       background: var(--card-hi);
       color: var(--txt);
+    }
+
+    .date-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .preset-dates {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .preset-btn {
+      background: var(--card-hi);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: var(--size-label);
+      font-family: var(--font-body);
+      color: var(--txt-2);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .preset-btn:hover {
+      background: var(--hover);
+      color: var(--amber);
+      border-color: var(--amber-border);
     }
 
     /* Counter Component */
@@ -710,22 +735,25 @@
     /* KPI row */
     .kpi-row {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: 1fr auto;
       gap: 20px;
-      align-items: start;
+      align-items: center;
     }
 
     .kpi-main {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 10px;
     }
 
     .kpi-eyebrow-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 2px;
     }
 
     .kpi-eyebrow {
@@ -734,6 +762,13 @@
       letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--txt-2);
+    }
+
+    .kpi-body-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .trend-badge {
@@ -768,11 +803,14 @@
 
     .kpi-number {
       font-family: var(--font-display);
-      font-size: var(--size-display);
+      font-size: var(--size-kpi);
       font-weight: 800;
-      letter-spacing: -.04em;
+      line-height: 1;
+      letter-spacing: -.03em;
       transition: color .5s ease;
       font-variant-numeric: tabular-nums;
+      padding-right: 18px;
+      border-right: 1px solid var(--border-s);
     }
 
     .kpi-number.gain {
@@ -790,8 +828,8 @@
     .kpi-context {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding-top: 8px;
+      gap: 4px;
+      flex: 1;
     }
 
     .kpi-verdict {
@@ -1262,13 +1300,12 @@
 
 
           <!-- Panel: qué pesa más en la canasta -->
-          <button class="canasta-toggle" id="canasta-toggle">
-            <span class="toggle-icon">▸</span>
-            <span>¿Qué pesa en tu canasta?</span>
-          </button>
           <div class="canasta-panel" id="canasta-panel">
-            <div class="canasta-bars" id="canasta-bars"></div>
-            <p class="canasta-compare" id="canasta-compare"></p>
+            <div class="canasta-panel-inner">
+              <div class="canasta-header-title">Componentes de tu Canasta</div>
+              <div class="canasta-bars" id="canasta-bars"></div>
+              <p class="canasta-compare" id="canasta-compare"></p>
+            </div>
           </div>
         </div>
 
@@ -1305,7 +1342,15 @@
               </span>
             </span>
           </span>
-          <select id="select-fecha" class="select-fecha"></select>
+          <div class="preset-dates" id="preset-dates">
+            <button type="button" class="preset-btn" data-ym="2016-12">2016</button>
+            <button type="button" class="preset-btn" data-ym="2023-12">2023</button>
+            <button type="button" class="preset-btn" data-ym="2025-01">2025</button>
+          </div>
+          <div class="date-select-grid">
+            <select id="select-mes" class="select-fecha" aria-label="Seleccionar mes"></select>
+            <select id="select-anio" class="select-fecha" aria-label="Seleccionar año"></select>
+          </div>
           <span style="font-size:.72rem;color:var(--txt-3)">
             Todos los índices se rebasan a 100 en esta fecha.
           </span>
@@ -1371,14 +1416,14 @@
                 </span>
                 <span class="trend-badge" id="trend-badge"></span>
               </div>
-              <div class="kpi-number neutral" id="kpi-number">—</div>
-            </div>
-
-            <!-- Contexto -->
-            <div class="kpi-context">
-              <div class="kpi-verdict" id="kpi-verdict">—</div>
-              <div class="kpi-detail kpi-detail-main" id="kpi-detail">—</div>
-              <div class="kpi-detail kpi-detail-sub" id="kpi-detail-sub">—</div>
+              <div class="kpi-body-row">
+                <div class="kpi-number neutral" id="kpi-number">—</div>
+                <div class="kpi-context">
+                  <div class="kpi-verdict" id="kpi-verdict">—</div>
+                  <div class="kpi-detail kpi-detail-main" id="kpi-detail">—</div>
+                  <div class="kpi-detail kpi-detail-sub" id="kpi-detail-sub">—</div>
+                </div>
+              </div>
             </div>
 
             <!-- Mini KPIs -->
@@ -1616,40 +1661,74 @@
         const r = await fetch('/api/index');
         S.meta = await r.json();
         
-        // Configurar date dropdown (select-fecha)
-        const sel = $('select-fecha');
-        if (sel) {
-          sel.innerHTML = '';
-          const minYm = S.meta.fecha_min.substring(0, 7);
-          const maxYm = S.meta.fecha_max.substring(0, 7);
-          
-          const startDate = new Date(minYm + '-01T00:00:00');
-          const endDate = new Date(maxYm + '-01T00:00:00');
-          
-          let curr = new Date(endDate);
-          while (curr >= startDate) {
-            const year = curr.getFullYear();
-            const month = String(curr.getMonth() + 1).padStart(2, '0');
-            const valStr = `${year}-${month}`;
-            const monthName = curr.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
-            const formattedName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            
+        // Configurar date dropdowns (select-mes & select-anio)
+        const selMes = $('select-mes');
+        const selAnio = $('select-anio');
+
+        if (selMes && selAnio) {
+          selMes.innerHTML = '';
+          selAnio.innerHTML = '';
+
+          const meses = [
+            { v: '01', t: 'Enero' }, { v: '02', t: 'Febrero' }, { v: '03', t: 'Marzo' },
+            { v: '04', t: 'Abril' }, { v: '05', t: 'Mayo' }, { v: '06', t: 'Junio' },
+            { v: '07', t: 'Julio' }, { v: '08', t: 'Agosto' }, { v: '09', t: 'Septiembre' },
+            { v: '10', t: 'Octubre' }, { v: '11', t: 'Noviembre' }, { v: '12', t: 'Diciembre' }
+          ];
+
+          meses.forEach(m => {
             const opt = document.createElement('option');
-            opt.value = valStr;
-            opt.textContent = formattedName;
-            sel.appendChild(opt);
-            
-            curr.setMonth(curr.getMonth() - 1);
+            opt.value = m.v;
+            opt.textContent = m.t;
+            selMes.appendChild(opt);
+          });
+
+          const minYear = parseInt(S.meta.fecha_min.substring(0, 4));
+          const maxYear = parseInt(S.meta.fecha_max.substring(0, 4));
+
+          for (let y = maxYear; y >= minYear; y--) {
+            const opt = document.createElement('option');
+            opt.value = String(y);
+            opt.textContent = String(y);
+            selAnio.appendChild(opt);
           }
-          
+
           // Default: 4 años atrás o fecha_min
           const dflt = new Date(S.meta.fecha_max);
           dflt.setFullYear(dflt.getFullYear() - 4);
-          const dfltStr = dflt.toISOString().substring(0, 7);
-          const targetVal = dfltStr < minYm ? minYm : dfltStr;
-          
-          sel.value = targetVal;
-          S.fecha = sel.value;
+          const dfltYm = dflt.toISOString().substring(0, 7);
+          const minYm = S.meta.fecha_min.substring(0, 7);
+          const targetVal = dfltYm < minYm ? minYm : dfltYm;
+
+          const [initY, initM] = targetVal.split('-');
+          selAnio.value = initY;
+          selMes.value = initM;
+          S.fecha = `${initY}-${initM}`;
+
+          function onDateChange() {
+            S.fecha = `${selAnio.value}-${selMes.value}`;
+            updateResultsContext();
+            maybeAnalyze();
+          }
+
+          selMes.addEventListener('change', onDateChange);
+          selAnio.addEventListener('change', onDateChange);
+
+          // Connect preset buttons
+          const presetBtns = document.querySelectorAll('.preset-btn');
+          presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              const ym = btn.getAttribute('data-ym');
+              if (ym) {
+                const [py, pm] = ym.split('-');
+                if (selAnio.querySelector(`option[value="${py}"]`)) selAnio.value = py;
+                if (selMes.querySelector(`option[value="${pm}"]`)) selMes.value = pm;
+                S.fecha = ym;
+                updateResultsContext();
+                maybeAnalyze();
+              }
+            });
+          });
         }
         renderCanasta(S.clase || 'Media');
         updateResultsContext();
@@ -1723,6 +1802,7 @@
         $('canasta-compare').innerHTML =
           `Tu clase gasta <strong>${Math.abs(diff).toFixed(1)} puntos menos</strong> en ${nombreTop} que la Clase ${contraste}.`;
       }
+      $('canasta-panel').classList.add('visible');
     }
 
     function setupNoSePanel() {
@@ -1904,19 +1984,33 @@
         return d.toLocaleDateString('es-AR', { month: 'short', year: '2-digit' });
       });
 
-      const datasets = [{
-        label: 'ISR',
-        data: data.isr,
-        borderColor: '#4f8ef7',
-        backgroundColor: gradient,
-        fill: true,
-        borderWidth: 2.5,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: '#4f8ef7',
-        tension: 0.35,
-        order: 1,
-      }];
+      const datasets = [
+        {
+          label: 'ISR (Poder Real)',
+          data: data.isr,
+          borderColor: '#4f8ef7',
+          backgroundColor: gradient,
+          fill: true,
+          borderWidth: 2.5,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#4f8ef7',
+          tension: 0.35,
+          order: 1,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Base 100 (Inicio)',
+          data: Array(data.isr.length).fill(100),
+          borderColor: 'rgba(244, 63, 94, 0.85)',
+          borderWidth: 1.8,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false,
+          yAxisID: 'y',
+          order: 4,
+        }
+      ];
 
       if (S.showComponentes) {
         datasets.push({
@@ -1925,12 +2019,13 @@
           borderColor: '#e8b84b',
           backgroundColor: 'transparent',
           fill: false,
-          borderWidth: 1.5,
-          borderDash: [3, 3],
+          borderWidth: 2.2,
+          borderDash: [4, 4],
           pointRadius: 0,
-          pointHoverRadius: 4,
+          pointHoverRadius: 5,
           tension: 0.35,
           order: 2,
+          yAxisID: 'y1',
         });
         datasets.push({
           label: 'Inflación de tu clase',
@@ -1938,12 +2033,13 @@
           borderColor: '#f74b5e',
           backgroundColor: 'transparent',
           fill: false,
-          borderWidth: 1.5,
-          borderDash: [3, 3],
+          borderWidth: 2.2,
+          borderDash: [4, 4],
           pointRadius: 0,
-          pointHoverRadius: 4,
+          pointHoverRadius: 5,
           tension: 0.35,
           order: 3,
+          yAxisID: 'y1',
         });
       }
 
@@ -1962,6 +2058,7 @@
               annotations: {
                 base: {
                   type: 'line',
+                  scaleID: 'y',
                   yMin: 100, yMax: 100,
                   borderColor: 'rgba(247,75,94,0.55)',
                   borderWidth: 1.5,
@@ -1994,12 +2091,35 @@
           scales: {
             x: {
               grid: { color: 'rgba(255,255,255,0.035)' },
-              ticks:  { color: '#6b7a8e', maxTicksLimit: 12, font: { size: 11, family: "'Outfit', sans-serif" } }
-        },
-        y: {
-          grid:   { color: 'rgba(255,255,255,0.035)' },
-          ticks:  { color: '#6b7a8e', font: { size: 11, family: "'Outfit', sans-serif" }, callback: v => v.toFixed(0) },
+              ticks: { color: '#6b7a8e', maxTicksLimit: 12, font: { size: 11, family: "'Outfit', sans-serif" } }
+            },
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              grid: { color: 'rgba(255,255,255,0.035)' },
+              ticks: { color: '#38bdf8', font: { size: 11, family: "'Outfit', sans-serif" }, callback: v => v.toFixed(0) },
               border: { color: 'rgba(255,255,255,0.06)' },
+              title: {
+                display: S.showComponentes,
+                text: 'ISR (Poder Adquisitivo Real)',
+                color: '#38bdf8',
+                font: { size: 10, family: "'Outfit', sans-serif", weight: '600' }
+              }
+            },
+            y1: {
+              type: 'linear',
+              display: S.showComponentes,
+              position: 'right',
+              grid: { drawOnChartArea: false },
+              ticks: { color: '#e8b84b', font: { size: 10, family: "'Outfit', sans-serif" } },
+              border: { color: 'rgba(232,184,75,0.2)' },
+              title: {
+                display: S.showComponentes,
+                text: 'Índices Nominales (Base 100)',
+                color: '#e8b84b',
+                font: { size: 10, family: "'Outfit', sans-serif" }
+              }
             }
           }
         }
@@ -2008,25 +2128,98 @@
       // Leyenda y caption dinámicas
       const legend = $('chart-legend');
       legend.innerHTML = `
-    <span><span class="legend-dot" style="background:#4f8ef7"></span>ISR</span>
-    <span><span class="legend-dot" style="background:rgba(247,75,94,.6)"></span>Base 100</span>
+    <span><span class="legend-dot" style="background:#4f8ef7"></span>ISR (Poder Real)</span>
+    <span><span class="legend-dot" style="background:rgba(244,63,94,.85)"></span>Base 100</span>
     ${S.showComponentes ? `
-      <span><span class="legend-dot" style="background:#e8b84b"></span>Salario nominal</span>
-      <span><span class="legend-dot" style="background:#f74b5e"></span>Inflación</span>
+      <span><span class="legend-dot" style="background:#e8b84b"></span>Salario Nominal</span>
+      <span><span class="legend-dot" style="background:#f74b5e"></span>Inflación de tu Clase</span>
     ` : ''}
   `;
       $('chart-caption').classList.toggle('visible', S.showComponentes);
     }
 
     function exportChartImage() {
-      const canvas = $('chart');
-      if (!canvas) return;
+      const sourceCanvas = $('chart');
+      if (!sourceCanvas || !S.lastData) return;
 
-      const imageURI = canvas.toDataURL('image/png');
+      const width = 1200;
+      const height = 675;
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = width;
+      offCanvas.height = height;
+      const ctx = offCanvas.getContext('2d');
+
+      // 1. Background gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+      bgGrad.addColorStop(0, '#0b111e');
+      bgGrad.addColorStop(1, '#070b12');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Outer Border Frame
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(16, 16, width - 32, height - 32);
+
+      // 3. Header Title & Subtitle
+      ctx.font = 'bold 28px "Outfit", system-ui, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText('Índice de Salario Real · Argentina', 40, 60);
+
+      const d = S.lastData;
+      const isrVal = d.ultimo_isr;
+      const deltaVal = isrVal - 100;
+      const claseStr = d.clase || 'Media';
+      const sectorStr = labelSalario(d.salario_key);
+      const fechaIni = fmtMonth(d.fechas[0]);
+      const fechaFin = fmtMonth(d.fecha_datos || d.fechas[d.fechas.length - 1]);
+
+      ctx.font = '16px "Outfit", system-ui, sans-serif';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText(`Clase ${claseStr} · Sector ${sectorStr} · Período ${fechaIni} → ${fechaFin}`, 40, 92);
+
+      // 4. KPI Banner Card
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(40, 115, width - 80, 75, 12);
+      } else {
+        ctx.rect(40, 115, width - 80, 75);
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      // KPI Number & Text
+      const isGain = isrVal >= 100;
+      ctx.font = 'bold 36px "Outfit", system-ui, sans-serif';
+      ctx.fillStyle = isGain ? '#10b981' : '#f43f5e';
+      ctx.fillText(`ISR: ${isrVal.toFixed(1)}`, 60, 166);
+
+      ctx.font = '600 18px "Outfit", system-ui, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      const verdictText = isGain ? 'Ganamos poder de compra (+' + deltaVal.toFixed(1) + '%)' : 'Perdimos poder de compra (' + deltaVal.toFixed(1) + '%)';
+      ctx.fillText(verdictText, 250, 164);
+
+      // 5. Draw the Chart.js canvas image into the card
+      const chartY = 205;
+      const chartH = 410;
+      ctx.drawImage(sourceCanvas, 40, chartY, width - 80, chartH);
+
+      // 6. Watermark Footer
+      ctx.font = '13px "Outfit", system-ui, sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Fuente: INDEC (Series de Tiempo) · Calculado por Clase Social', 40, height - 26);
+
+      ctx.textAlign = 'right';
+      ctx.fillText('ISR por Clase Social · Argentina', width - 40, height - 26);
+      ctx.textAlign = 'left';
+
+      // 7. Download PNG
+      const imageURI = offCanvas.toDataURL('image/png');
       const link = document.createElement('a');
-      const claseStr = S.clase || 'Media';
-      const sectorStr = S.salario || 'general';
-      link.download = `ISR-Poder-Adquisitivo-${claseStr}-${sectorStr}.png`;
+      link.download = `ISR-Infografia-${claseStr}-${sectorStr}.png`;
       link.href = imageURI;
       document.body.appendChild(link);
       link.click();
@@ -2076,6 +2269,7 @@
     async function main() {
       await loadMeta();
       initClassDetectionModal();
+
       // Clase
       setupSeg('seg-clase', val => {
         const isNose = val === 'nose';
@@ -2089,45 +2283,31 @@
         }
       });
 
-      // Toggle panel "¿Qué pesa más en tu canasta?"
-      $('canasta-toggle').addEventListener('click', () => {
-        const panel = $('canasta-panel');
-        const btn = $('canasta-toggle');
-        const willShow = !panel.classList.contains('visible');
-        panel.classList.toggle('visible', willShow);
-        btn.classList.toggle('open', willShow);
-        if (willShow && S.clase) renderCanasta(S.clase);
-      });
-
-      // Salario
+      // Salario (Origen de ingresos)
       setupSeg('seg-salario', val => {
         S.salario = val;
         updateResultsContext();
         maybeAnalyze();
       });
 
-      // Fecha
-      $('select-fecha').addEventListener('change', e => {
-        S.fecha = e.target.value;
-        updateResultsContext();
-        maybeAnalyze();
-      });
-
       // Toggle componentes (ISAL / IPC) — re-renderiza el gráfico sin re-fetch
-      $('toggle-componentes').addEventListener('click', () => {
-        S.showComponentes = !S.showComponentes;
-        const btn = $('toggle-componentes');
-        btn.classList.toggle('active', S.showComponentes);
-        btn.setAttribute('aria-pressed', String(S.showComponentes));
-        btn.textContent = S.showComponentes ? '− Ocultar componentes' : '+ Ver componentes';
-        if (S.lastData) renderChart(S.lastData);
-      });
+      const toggleBtn = $('toggle-componentes');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          S.showComponentes = !S.showComponentes;
+          toggleBtn.classList.toggle('active', S.showComponentes);
+          toggleBtn.setAttribute('aria-pressed', String(S.showComponentes));
+          toggleBtn.textContent = S.showComponentes ? '− Ocultar componentes' : '+ Ver inflación y salarios';
+          if (S.lastData) renderChart(S.lastData);
+        });
+      }
 
       // Exportar gráfico como PNG
-      $('btn-export').addEventListener('click', exportChartImage);
+      const exportBtn = $('btn-export');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', exportChartImage);
+      }
 
-      // Mostrar fecha una vez que hay clase + salario
-      // (lo mostramos siempre para simplificar, con un mensaje útil)
       $('fecha-group').style.display = '';
     }
 

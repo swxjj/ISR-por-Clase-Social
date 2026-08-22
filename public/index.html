@@ -136,12 +136,99 @@
       display: grid;
       grid-template-columns: 320px 1fr;
       gap: 24px;
-      align-items: start;
+      align-items: stretch;
     }
 
     @media (max-width: 900px) {
       .body {
         grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Mobile Stepper Navigation ────────────────────────────── */
+    .mobile-stepper-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-hi);
+      border: 1px solid var(--border-s);
+      border-radius: var(--radius-s);
+      padding: 8px 14px;
+      margin-bottom: 4px;
+    }
+
+    .mobile-step-pill {
+      font-size: var(--size-label);
+      font-weight: 600;
+      color: var(--txt-3);
+      transition: color .2s;
+    }
+
+    .mobile-step-pill.active {
+      color: var(--amber);
+    }
+
+    .mobile-step-pill.done {
+      color: var(--gain);
+    }
+
+    .mobile-step-arrow {
+      font-size: var(--size-label);
+      color: var(--txt-3);
+    }
+
+    .mobile-nav-row {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mobile-nav-btn {
+      flex: 1;
+      background: var(--card-hi);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-s);
+      padding: 10px 14px;
+      font-family: var(--font-display);
+      font-size: var(--size-label);
+      font-weight: 600;
+      color: var(--txt);
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      text-align: center;
+    }
+
+    .mobile-nav-btn:hover {
+      background: var(--hover);
+    }
+
+    .mobile-nav-btn.primary {
+      background: var(--amber);
+      color: var(--txt-dark);
+      border-color: var(--amber);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-stepper-bar {
+        display: flex;
+      }
+
+      .mobile-nav-row {
+        display: flex;
+      }
+
+      .mobile-phase-group {
+        display: none !important;
+      }
+
+      .mobile-phase-group.active {
+        display: flex !important;
+        animation: fadeSlideUp 0.3s ease;
+      }
+
+      .chart-wrap {
+        min-height: 380px !important;
       }
     }
 
@@ -611,6 +698,12 @@
     }
 
     /* Empty / loading states */
+    .main {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
     .state-empty {
       flex: 1;
       display: flex;
@@ -725,7 +818,8 @@
     .results {
       display: none;
       flex-direction: column;
-      gap: 24px;
+      flex: 1;
+      gap: 20px;
     }
 
     .results.visible {
@@ -740,41 +834,54 @@
       align-items: center;
     }
 
-    .kpi-main {
+    /* ── Unified Glassmorphic KPI Banner ────────────────────────────── */
+    .kpi-banner-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 18px 22px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 16px;
+      margin-bottom: 20px;
     }
 
-    .kpi-eyebrow-row {
+    .kpi-banner-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-s);
     }
 
-    .kpi-eyebrow {
-      font-size: .72rem;
-      font-weight: 600;
+    .kpi-banner-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--size-label);
+      font-weight: 700;
       letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--txt-2);
     }
 
-    .kpi-body-row {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
+    .results-context-pill {
+      font-size: var(--size-label);
+      font-weight: 600;
+      color: var(--blue);
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-border);
+      border-radius: var(--radius-pill);
+      padding: 3px 10px;
+      letter-spacing: .04em;
     }
 
     .trend-badge {
       font-size: var(--size-label);
       font-weight: 600;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: var(--radius-pill);
       display: none;
       align-items: center;
@@ -801,6 +908,18 @@
       color: var(--txt-2);
     }
 
+    .kpi-banner-grid {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .kpi-number-col {
+      display: flex;
+      align-items: center;
+    }
+
     .kpi-number {
       font-family: var(--font-display);
       font-size: var(--size-kpi);
@@ -809,8 +928,6 @@
       letter-spacing: -.03em;
       transition: color .5s ease;
       font-variant-numeric: tabular-nums;
-      padding-right: 18px;
-      border-right: 1px solid var(--border-s);
     }
 
     .kpi-number.gain {
@@ -825,48 +942,44 @@
       color: var(--txt);
     }
 
-    .kpi-context {
+    .kpi-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border-s);
+    }
+
+    .kpi-verdict-col {
       display: flex;
       flex-direction: column;
       gap: 4px;
       flex: 1;
+      min-width: 240px;
     }
 
     .kpi-verdict {
       font-family: var(--font-display);
       font-size: var(--size-subheadline);
-      font-weight: 400;
+      font-weight: 700;
       color: var(--txt);
     }
 
     .kpi-detail {
-      line-height: 1.6;
-    }
-
-    .kpi-detail-main {
       font-size: .88rem;
-      color: var(--txt);
-      font-weight: 400;
-    }
-
-    .kpi-detail-sub {
-      font-size: var(--size-label);
       color: var(--txt-2);
+      line-height: 1.5;
     }
 
-    /* Mini KPIs */
-    .mini-kpis {
+    .kpi-mini-col {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .mini-kpi-item {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      min-width: 160px;
-    }
-
-    .mini-kpi {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-s);
-      padding: 10px 14px;
+      gap: 2px;
     }
 
     .mini-kpi-label {
@@ -878,9 +991,21 @@
 
     .mini-kpi-val {
       font-size: var(--size-subheadline);
-      font-weight: 600;
-      margin-top: 2px;
+      font-weight: 700;
       font-variant-numeric: tabular-nums;
+    }
+
+    .mini-kpi-divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border-s);
+    }
+
+    .kpi-banner-footer {
+      font-size: var(--size-label);
+      color: var(--txt-3);
+      line-height: 1.4;
+      padding-top: 4px;
     }
 
     /* Chart card */
@@ -890,6 +1015,8 @@
       border-radius: var(--radius);
       padding: 20px 20px 16px;
       flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .chart-header {
@@ -988,7 +1115,9 @@
 
     .chart-wrap {
       position: relative;
-      height: 260px;
+      flex: 1;
+      min-height: 260px;
+      width: 100%;
     }
 
     /* Error */
@@ -1278,8 +1407,17 @@
       <!-- ── Sidebar ────────────────────────────────────────────────── -->
       <aside class="sidebar">
 
-        <!-- Clase Social -->
-        <div class="control-group">
+        <!-- Mobile Progress Stepper Bar -->
+        <div class="mobile-stepper-bar" id="mobile-stepper-bar">
+          <span class="mobile-step-pill active" id="mstep-1">1. Clase</span>
+          <span class="mobile-step-arrow">→</span>
+          <span class="mobile-step-pill" id="mstep-2">2. Ingresos</span>
+          <span class="mobile-step-arrow">→</span>
+          <span class="mobile-step-pill" id="mstep-3">3. Período</span>
+        </div>
+
+        <!-- Clase Social (Paso 1) -->
+        <div class="control-group mobile-phase-group active" id="phase-group-1">
           <span class="label-row">
             <span class="step-num">01</span>
             <span class="control-label">Tu clase social</span>
@@ -1297,8 +1435,6 @@
             <button data-val="nose">No sé</button>
           </div>
 
-
-
           <!-- Panel: qué pesa más en la canasta -->
           <div class="canasta-panel" id="canasta-panel">
             <div class="canasta-panel-inner">
@@ -1307,10 +1443,14 @@
               <p class="canasta-compare" id="canasta-compare"></p>
             </div>
           </div>
+
+          <div class="mobile-nav-row">
+            <button type="button" class="mobile-nav-btn primary" id="mbtn-to-phase-2">Continuar a Ingresos →</button>
+          </div>
         </div>
 
-        <!-- Origen de Ingresos -->
-        <div class="control-group">
+        <!-- Origen de Ingresos (Paso 2) -->
+        <div class="control-group mobile-phase-group" id="phase-group-2">
           <span class="label-row">
             <span class="step-num">02</span>
             <span class="control-label">Origen de tus ingresos</span>
@@ -1328,10 +1468,15 @@
             <button data-val="informal">Informal</button>
             <button data-val="general">No sé</button>
           </div>
+
+          <div class="mobile-nav-row">
+            <button type="button" class="mobile-nav-btn" id="mbtn-back-to-1">← Volver</button>
+            <button type="button" class="mobile-nav-btn primary" id="mbtn-to-phase-3">Continuar a Fecha →</button>
+          </div>
         </div>
 
-        <!-- Fecha de inicio -->
-        <div class="control-group" id="fecha-group">
+        <!-- Fecha de inicio (Paso 3) -->
+        <div class="control-group mobile-phase-group" id="fecha-group">
           <span class="label-row">
             <span class="step-num">03</span>
             <span class="control-label">Analizar desde</span>
@@ -1354,6 +1499,11 @@
           <span style="font-size:.72rem;color:var(--txt-3)">
             Todos los índices se rebasan a 100 en esta fecha.
           </span>
+
+          <div class="mobile-nav-row">
+            <button type="button" class="mobile-nav-btn" id="mbtn-back-to-2">← Volver</button>
+            <button type="button" class="mobile-nav-btn primary" id="mbtn-calc-mobile">📊 Calcular Mi Índice</button>
+          </div>
         </div>
 
         <div class="sidebar-footer">
@@ -1398,49 +1548,52 @@
         <!-- Resultados -->
         <div class="results" id="results">
 
-          <div class="kpi-row">
-            <!-- Context: class, sector, date range -->
-            <div class="results-context" id="results-context"
-              style="grid-column: 1 / -1; font-size: .75rem; color: var(--txt-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em;">
-            </div>
-
-            <!-- KPI principal -->
-            <div class="kpi-main">
-              <div class="kpi-eyebrow-row">
-                <span class="kpi-eyebrow">Poder adquisitivo actual</span>
+          <!-- Banner KPI Unificado -->
+          <div class="kpi-banner-card">
+            <div class="kpi-banner-header">
+              <div class="kpi-banner-title">
+                <span>Poder adquisitivo actual</span>
                 <span class="info-tip" tabindex="0">?
                   <span class="tip-bubble">
                     <strong>ISR (Índice de Salario Real):</strong> Compara cuánto subió tu salario contra cuánto
                     subieron los precios que vos consumís. 100 = mismo poder de compra que en el mes base.
                   </span>
                 </span>
-                <span class="trend-badge" id="trend-badge"></span>
               </div>
-              <div class="kpi-body-row">
+              <div class="results-context-pill" id="results-context"></div>
+              <span class="trend-badge" id="trend-badge"></span>
+            </div>
+
+            <div class="kpi-banner-grid">
+              <div class="kpi-number-col">
                 <div class="kpi-number neutral" id="kpi-number">—</div>
-                <div class="kpi-context">
-                  <div class="kpi-verdict" id="kpi-verdict">—</div>
-                  <div class="kpi-detail kpi-detail-main" id="kpi-detail">—</div>
-                  <div class="kpi-detail kpi-detail-sub" id="kpi-detail-sub">—</div>
+              </div>
+
+              <div class="kpi-divider"></div>
+
+              <div class="kpi-verdict-col">
+                <div class="kpi-verdict" id="kpi-verdict">—</div>
+                <div class="kpi-detail" id="kpi-detail">—</div>
+              </div>
+
+              <div class="kpi-divider"></div>
+
+              <div class="kpi-mini-col">
+                <div class="mini-kpi-item">
+                  <span class="mini-kpi-label">Inflación Total</span>
+                  <span class="mini-kpi-val" id="mini-ipc" style="color:var(--loss)">—</span>
+                </div>
+                <div class="mini-kpi-divider"></div>
+                <div class="mini-kpi-item">
+                  <span class="mini-kpi-label">Salarios Total</span>
+                  <span class="mini-kpi-val" id="mini-isal" style="color:var(--blue)">—</span>
                 </div>
               </div>
             </div>
 
-            <!-- Mini KPIs -->
-            <div class="mini-kpis">
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Inflación total</div>
-                <div class="mini-kpi-val" id="mini-ipc" style="color:var(--loss)">—</div>
-              </div>
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Salarios total</div>
-                <div class="mini-kpi-val" id="mini-isal" style="color:var(--blue)">—</div>
-              </div>
+            <div class="kpi-banner-footer">
+              💡 Si tu Salario subió más que la Inflación de tu canasta, ganaste poder adquisitivo (ISR &gt; 100).
             </div>
-            <p class="mini-kpis-note">
-              Los totales corresponden al período analizado y son los componentes del ISR: si tu Salario subió más que
-              Inflación, ganaste poder adquisitivo (ISR &gt; 100).
-            </p>
           </div>
 
           <!-- Gráfico -->
@@ -1730,7 +1883,7 @@
             });
           });
         }
-        renderCanasta(S.clase || 'Media');
+        if (S.clase) renderCanasta(S.clase);
         updateResultsContext();
         maybeAnalyze();
       } catch (e) {
@@ -1915,11 +2068,7 @@
         : `Por cada $100 de poder adquisitivo en ${fechaIni}, hoy te quedan $${isr.toFixed(0)}.`;
       $('kpi-detail').textContent = label;
       const fechaDatos = fmtMonth(data.fecha_datos || data.fechas[data.fechas.length - 1]);
-      const trailing = data.fecha_datos && data.fecha_datos !== data.fechas[data.fechas.length - 1]
-        ? ` · datos hasta ${fechaDatos}`
-        : '';
-      $('kpi-detail-sub').textContent =
-        `Clase ${data.clase} · Ingresos ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaDatos}${trailing}`;
+      $('results-context').textContent = `Clase ${data.clase} · ${labelSalario(data.salario_key)} · ${fechaIni} → ${fechaDatos}`;
 
       // Badge de tendencia (últimos 6 meses, o todo el período si hay menos datos)
       renderTrendBadge(data);
@@ -2091,7 +2240,7 @@
           scales: {
             x: {
               grid: { color: 'rgba(255,255,255,0.035)' },
-              ticks: { color: '#6b7a8e', maxTicksLimit: 12, font: { size: 11, family: "'Outfit', sans-serif" } }
+              ticks: { color: '#6b7a8e', maxTicksLimit: window.innerWidth <= 768 ? 6 : 12, font: { size: window.innerWidth <= 768 ? 10 : 11, family: "'Outfit', sans-serif" } }
             },
             y: {
               type: 'linear',
@@ -2307,6 +2456,57 @@
       if (exportBtn) {
         exportBtn.addEventListener('click', exportChartImage);
       }
+
+      // Mobile stepper navigation logic
+      S.mobilePhase = 1;
+
+      function setMobilePhase(phase) {
+        S.mobilePhase = phase;
+        const g1 = $('phase-group-1');
+        const g2 = $('phase-group-2');
+        const g3 = $('fecha-group');
+
+        if (g1) g1.classList.toggle('active', phase === 1);
+        if (g2) g2.classList.toggle('active', phase === 2);
+        if (g3) g3.classList.toggle('active', phase === 3);
+
+        const m1 = $('mstep-1');
+        const m2 = $('mstep-2');
+        const m3 = $('mstep-3');
+
+        if (m1) {
+          m1.classList.toggle('active', phase === 1);
+          m1.classList.toggle('done', phase > 1);
+        }
+        if (m2) {
+          m2.classList.toggle('active', phase === 2);
+          m2.classList.toggle('done', phase > 2);
+        }
+        if (m3) {
+          m3.classList.toggle('active', phase === 3);
+        }
+      }
+
+      if ($('mbtn-to-phase-2')) $('mbtn-to-phase-2').addEventListener('click', () => setMobilePhase(2));
+      if ($('mbtn-back-to-1')) $('mbtn-back-to-1').addEventListener('click', () => setMobilePhase(1));
+      if ($('mbtn-to-phase-3')) $('mbtn-to-phase-3').addEventListener('click', () => setMobilePhase(3));
+      if ($('mbtn-back-to-2')) $('mbtn-back-to-2').addEventListener('click', () => setMobilePhase(2));
+
+      if ($('mbtn-calc-mobile')) {
+        $('mbtn-calc-mobile').addEventListener('click', () => {
+          maybeAnalyze();
+          const res = $('results');
+          if (res) {
+            setTimeout(() => {
+              res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+          }
+        });
+      }
+
+      if ($('mstep-1')) $('mstep-1').addEventListener('click', () => setMobilePhase(1));
+      if ($('mstep-2')) $('mstep-2').addEventListener('click', () => setMobilePhase(2));
+      if ($('mstep-3')) $('mstep-3').addEventListener('click', () => setMobilePhase(3));
 
       $('fecha-group').style.display = '';
     }
